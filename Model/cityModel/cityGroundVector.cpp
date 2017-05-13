@@ -1,5 +1,6 @@
 #include "cityGroundVector.h"
 #include <fstream>
+#include <iostream>
 cityGroundVector::cityGroundVector(string indn)
 {
 	groundVector.clear();
@@ -57,4 +58,28 @@ bool cityGroundVector::existed()
 double cityGroundVector:: getAltitudeFrom0(double x, double y)
 {
 	return groundVector[0]->getPointAltitude(x, y);
+}
+
+double cityGroundVector::getBaseByIndex(int i)
+{
+	if (i<0||i>=bases.size())
+	{
+		cout << "error: wrong  Base Index!" << endl;
+		return -1;
+	}
+	return bases[i];
+}
+vector<double> cityGroundVector::getBoundingBoxByIndex(int i)
+{
+	vector<double> res;
+	if (i < 0 || i >= xmins.size())
+	{
+		cout << "error: wrong  BoundingBox Index!" << endl;
+		return res;
+	}
+	res.push_back(xmins[i]);
+	res.push_back(xmaxs[i]);
+	res.push_back(ymins[i]);
+	res.push_back(ymaxs[i]);
+	return res;
 }

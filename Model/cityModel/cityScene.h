@@ -28,13 +28,15 @@ class cityScene
 		cityGroundVector *getGround();
 		double getAltitude(double x, double y);
 		vector<Building>& getTotal_Building(){ return total_Buildings; }
-		int getBuildingSize(){ return total_Buildings.size(); }
+		inline int getBuildingSize(){ return total_Buildings.size(); }
+		inline int getConcaveNum(){ return concave_num; }
 		const Building& getBuildingByReference(int id){ return total_Buildings[id]; }
 		Building getBuildingByValue(int id){ return total_Buildings[id]; }
-		Vector3d getMaxPoint(){ return MaxPoint; }
-		Vector3d getMinPoint(){ return MinPoint; }
+		inline Vector3d getMaxPoint(){ return MaxPoint; }
+		inline Vector3d getMinPoint(){ return MinPoint; }
 	private:
 		vector<Building> total_Buildings;
+		int concave_num;
 		Vector3d MaxPoint, MinPoint;
 		void readBuilding(const char*filename_2D, const char*filename_Height);
 		void readGround(string p);

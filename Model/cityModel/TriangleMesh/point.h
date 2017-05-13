@@ -7,37 +7,37 @@ public:
 	double x;
 	double y;
 	double z;
-	
+
 	bool spec;//凹凸性，凸1，凹0
 	int mark;//顶点编号
-	Pot(double xx,double yy)
+	Pot(double xx, double yy)
 	{
-		x =xx;
-		y =yy;
+		x = xx;
+		y = yy;
 		spec = true;
 	}
-	Pot(double xx,double yy,double zz)
+	Pot(double xx, double yy, double zz)
 	{
-		x =xx;
-		y =yy;
-		z =zz;
+		x = xx;
+		y = yy;
+		z = zz;
 	}
 	Pot()
 	{
-		x=0;y=0;z=0;
+		x = 0; y = 0; z = 0;
 	}
-	Pot(double xx,double yy,int mm,double zz)
+	Pot(double xx, double yy, int mm, double zz)
 	{
-		x =xx;
-		y =yy;
-		z =zz;
+		x = xx;
+		y = yy;
+		z = zz;
 		mark = mm;
 		spec = true;
 	}
 
 	double getLength()
 	{
-		return sqrt(x*x+y*y+z*z);
+		return sqrt(x*x + y*y + z*z);
 	}
 	void setSpec0()
 	{
@@ -56,13 +56,13 @@ public:
 
 	double DotProduct(const Pot vec)
 	{
-		return x* vec.x+ y * vec.y;
+		return x* vec.x + y * vec.y;
 	}
 
 	//二维向量减法
 	Pot Minus(const Pot vec) const
 	{
-		return Pot(x- vec.x, y - vec.y);
+		return Pot(x - vec.x, y - vec.y);
 	}
 
 	//判断点M,N是否在直线AB的同一侧
@@ -78,5 +78,5 @@ public:
 };
 
 double ComputeTriangleArea(Pot PotA_, Pot PotB_, Pot PotC_);
-bool IsPotInTriangle3(Pot PotA_, Pot PotB_, Pot PotC_,const Pot PotP);
+bool IsPotInTriangle3(Pot PotA_, Pot PotB_, Pot PotC_, const Pot PotP);
 #endif

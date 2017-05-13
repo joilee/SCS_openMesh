@@ -1,5 +1,6 @@
 #include "cityScene.h"
 #include "../../util/emxUtilityInc.h"
+#include <limits>
 #include <fstream>
 Building::Building()
 {
@@ -19,6 +20,9 @@ void cityScene::readGround(string p)
 
 cityScene::cityScene(QStringList _v, QStringList _h,string _p)
 {
+	concave_num = 0;
+	MinPoint = Vector3d(numeric_limits<double>::max(), numeric_limits<double>::max(), numeric_limits<double>::max());
+	MaxPoint = Vector3d(numeric_limits<double>::min(), numeric_limits<double>::min(), numeric_limits<double>::min());
 	readGround(_p);
 	cout << "Info: 地面模型读入成功。" << endl;
 	QString Scene2DInfoFile_path, SceneHeightInfoFile_path;
@@ -67,7 +71,7 @@ void cityScene::readBuilding(const char*filename_2D, const char*filename_Height)
 		getline(infile2, str2);
 		istringstream linestream2(str2);
 		linestream2 >> building_id2 >> sign2 >> height;
-	
+
 		if (point_num > 0)
 		{
 			Building building_info;

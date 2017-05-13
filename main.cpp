@@ -9,6 +9,7 @@
 #include <QTextCodec>
 #include <QElapsedTimer>  
 #include <QDateTime>  
+#include <QTreeView>
 
 globalContext *globalContext::ctx = NULL;
 
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
 	QPixmap pixmap("ImageFIle\\StartExe\\start.png");
 	QSplashScreen screen(pixmap);
 	screen.show();
-	int delayTime = 2;
+	int delayTime =0.5;
 	QElapsedTimer timer;
 	timer.start();
 	while (timer.elapsed() < (delayTime * 1000))

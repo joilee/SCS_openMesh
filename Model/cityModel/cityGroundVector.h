@@ -11,8 +11,10 @@ public:
 	cityGroundVector(string path);
 	~cityGroundVector();
 	vector<cityGround*> & getGroundVector(){ return groundVector; }
-	bool existed();
+    bool existed();
 	double getAltitudeFrom0(double x, double y);
+    double getBaseByIndex(int i);
+	vector<double> getBoundingBoxByIndex(int i);
 private:
 	vector<cityGround*> groundVector;
 	vector<double> bases;

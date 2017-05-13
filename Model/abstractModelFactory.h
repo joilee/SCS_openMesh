@@ -2,11 +2,11 @@
 #define ABSTRACT_MODEL_MANAGER_H
 #include "abstractModel.h"
 #include <string>
-class abstractModelManager
+class abstractModelFactory
 {
 public:
-	abstractModelManager();
-	virtual ~abstractModelManager()=0;
+	abstractModelFactory();
+	virtual ~abstractModelFactory ()= 0;
 
 	virtual abstractModel * loadModel(std::string path)=0;
 

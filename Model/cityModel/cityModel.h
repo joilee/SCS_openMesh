@@ -9,7 +9,8 @@ public:
 	cityModel(string jsonPath);
 	~cityModel();
 	void draw();
-	string getName(){ return name; }
+	inline string  getName(){ return name; }
+	inline cityScene* getCity(){ return city; }
 private:
 	string name;
 	
@@ -20,8 +21,6 @@ private:
 
 	//建筑物 
 	cityScene *city;  //整体的建筑物模型
-
-
 
 	//材料
 

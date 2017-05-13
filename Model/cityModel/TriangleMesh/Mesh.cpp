@@ -5,7 +5,7 @@ void Input(char* pFile, MESH_PTR pMesh)
 
 	if (!fp)
 	{
-		fprintf(stderr,"Error:%s open failed\n", pFile);
+		fprintf(stderr, "Error:%s open failed\n", pFile);
 		exit(1);
 	}
 
@@ -13,21 +13,21 @@ void Input(char* pFile, MESH_PTR pMesh)
 	int amount;
 
 	//fscanf( fp, "%d", &face);
-	fscanf( fp, "%d", &amount);
+	fscanf(fp, "%d", &amount);
 	if (amount < 3)
 	{
-		fprintf(stderr,"Error:vertex amount should be greater than 2, but it is %d \n",amount);
+		fprintf(stderr, "Error:vertex amount should be greater than 2, but it is %d \n", amount);
 		exit(1);
 	}
 
 	InitMesh(pMesh, amount);
 
-	REAL x,y,z;
-	for ( int j=3; j<amount+3; ++j)
+	REAL x, y, z;
+	for (int j = 3; j < amount + 3; ++j)
 	{
-		fscanf( fp, "%lg %lg %lg", &x, &y, &z) ;
-		((VERTEX2D_PTR)(pMesh->pVerArr+j))->x = x;
-		((VERTEX2D_PTR)(pMesh->pVerArr+j))->y = y;
+		fscanf(fp, "%lg %lg %lg", &x, &y, &z);
+		((VERTEX2D_PTR)(pMesh->pVerArr + j))->x = x;
+		((VERTEX2D_PTR)(pMesh->pVerArr + j))->y = y;
 	}
 
 
@@ -48,7 +48,7 @@ void IncrementalDelaunay(MESH_PTR pMesh)
 	AddBoundingBox(pMesh);
 
 	// Get a vertex/point vi from V and Insert(vi)
-	for (int i=3; i<pMesh->vertex_num+3; i++)
+	for (int i = 3; i < pMesh->vertex_num + 3; i++)
 	{
 		Insert(pMesh, i);
 	}
@@ -67,7 +67,7 @@ void Output(char* pFile, MESH_PTR pMesh)
 	FILE* fp = fopen(pFile, "w");
 	if (!fp)
 	{
-		fprintf(stderr,"Error:%s open failed\n", pFile);
+		fprintf(stderr, "Error:%s open failed\n", pFile);
 
 		UnInitMesh(pMesh);
 		exit(1);
@@ -77,15 +77,15 @@ void Output(char* pFile, MESH_PTR pMesh)
 	int* pi;
 	int vertex_index;
 	int tri_index = 0;
-	while(pTri != NULL)	
+	while (pTri != NULL)
 	{
 		fprintf(fp, "Triangle: %d\n", ++tri_index);
 
 		pi = &(pTri->i1);
-		for (int j=0; j<3; j++)	
-		{	
-			vertex_index = *pi++;		
-			fprintf(fp, "%lg %lg\n", ((VERTEX2D_PTR)(pMesh->pVerArr+vertex_index))->x, ((VERTEX2D_PTR)(pMesh->pVerArr+vertex_index))->y);
+		for (int j = 0; j < 3; j++)
+		{
+			vertex_index = *pi++;
+			fprintf(fp, "%lg %lg\n", ((VERTEX2D_PTR)(pMesh->pVerArr + vertex_index))->x, ((VERTEX2D_PTR)(pMesh->pVerArr + vertex_index))->y);
 		}
 
 		pTri = pTri->pNext;
@@ -98,13 +98,13 @@ void Output(char* pFile, MESH_PTR pMesh)
 
 
 // Allocate memory to store vertices and triangles
-void InitMesh(MESH_PTR pMesh, int ver_num )
+void InitMesh(MESH_PTR pMesh, int ver_num)
 {
 	// Allocate memory for vertex array
-	pMesh->pVerArr = (VERTEX2D_PTR)malloc((ver_num+3)*sizeof(VERTEX2D));
+	pMesh->pVerArr = (VERTEX2D_PTR)malloc((ver_num + 3)*sizeof(VERTEX2D));
 	if (pMesh->pVerArr == NULL)
 	{
-		fprintf(stderr,"Error:Allocate memory for mesh failed\n");
+		fprintf(stderr, "Error:Allocate memory for mesh failed\n");
 		exit(1);
 	}
 
@@ -116,7 +116,7 @@ void InitMesh(MESH_PTR pMesh, int ver_num )
 void UnInitMesh(MESH_PTR pMesh)
 {
 	// free vertices
-	if(pMesh->pVerArr != NULL)
+	if (pMesh->pVerArr != NULL)
 		free(pMesh->pVerArr);
 
 	// free triangles
@@ -137,31 +137,31 @@ void AddBoundingBox(MESH_PTR pMesh)
 	REAL max_y = 0;
 	REAL t;
 
-	for (int i=3; i<pMesh->vertex_num+3; i++)
+	for (int i = 3; i < pMesh->vertex_num + 3; i++)
 	{
-		t = abs(((VERTEX2D_PTR)(pMesh->pVerArr+i))->x);
+		t = abs(((VERTEX2D_PTR)(pMesh->pVerArr + i))->x);
 		if (max_x < t)
 		{
 			max_x = t;
 		}
 
-		t = abs(((VERTEX2D_PTR)(pMesh->pVerArr+i))->y);
+		t = abs(((VERTEX2D_PTR)(pMesh->pVerArr + i))->y);
 		if (max_y < t)
 		{
 			max_y = t;
 		}
 	}
 
-	max = max_x > max_y ? max_x:max_y;
+	max = max_x > max_y ? max_x : max_y;
 
 	//TRIANGLE box;
 	//box.v1 = VERTEX2D(0, 3*max);
 	//box.v2 = VERTEX2D(-3*max, 3*max);
 	//box.v3 = VERTEX2D(3*max, 0);
 
-	VERTEX2D v1 = {0, 4*max};
-	VERTEX2D v2 = {-4*max, -4*max};
-	VERTEX2D v3 = {4*max, 0};
+	VERTEX2D v1 = { 0, 4 * max };
+	VERTEX2D v2 = { -4 * max, -4 * max };
+	VERTEX2D v3 = { 4 * max, 0 };
 
 	// Assign to Vertex array
 	*(pMesh->pVerArr) = v1;
@@ -174,7 +174,7 @@ void AddBoundingBox(MESH_PTR pMesh)
 
 void RemoveBoundingBox(MESH_PTR pMesh)
 {
-	int statify[3]={0,0,0};
+	int statify[3] = { 0, 0, 0 };
 	int vertex_index;
 	int* pi;
 	int k = 1;
@@ -194,29 +194,29 @@ void RemoveBoundingBox(MESH_PTR pMesh)
 		statify[2] = 0;
 
 		pi = &(pTri->i1);
-		for (int j=0, k = 1; j<3; j++, k*= 2)
-		{			
+		for (int j = 0, k = 1; j < 3; j++, k *= 2)
+		{
 			vertex_index = *pi++;
 
-			if(vertex_index == 0 || vertex_index == 1 || vertex_index == 2) // bounding box vertex
+			if (vertex_index == 0 || vertex_index == 1 || vertex_index == 2) // bounding box vertex
 			{
 				statify[j] = k;
 			}
 		}
 
-		switch(statify[0] | statify[1] | statify[2] )
+		switch (statify[0] | statify[1] | statify[2])
 		{
 		case 0: // no statify
 			break;
 		case 1:
 		case 2:
 		case 4: // 1 statify, remove 1 triangle, 1 vertex
-			RemoveTriangleNode(pMesh, pTri);		
+			RemoveTriangleNode(pMesh, pTri);
 			break;
 		case 3:
 		case 5:
 		case 6: // 2 statify, remove 1 triangle, 2 vertices
-			RemoveTriangleNode(pMesh, pTri);			
+			RemoveTriangleNode(pMesh, pTri);
 			break;
 		case 7: // 3 statify, remove 1 triangle, 3 vertices
 			RemoveTriangleNode(pMesh, pTri);
@@ -248,23 +248,23 @@ REAL InTriangle(MESH_PTR pMesh, VERTEX2D_PTR pVer, TRIANGLE_PTR pTri)
 	int vertex_index;
 	VERTEX2D_PTR pV1, pV2, pV3;
 
-	vertex_index =pTri->i1;
-	pV1 = (VERTEX2D_PTR)(pMesh->pVerArr+vertex_index);
-	vertex_index =pTri->i2;
-	pV2 = (VERTEX2D_PTR)(pMesh->pVerArr+vertex_index);
-	vertex_index =pTri->i3;
-	pV3 = (VERTEX2D_PTR)(pMesh->pVerArr+vertex_index);
+	vertex_index = pTri->i1;
+	pV1 = (VERTEX2D_PTR)(pMesh->pVerArr + vertex_index);
+	vertex_index = pTri->i2;
+	pV2 = (VERTEX2D_PTR)(pMesh->pVerArr + vertex_index);
+	vertex_index = pTri->i3;
+	pV3 = (VERTEX2D_PTR)(pMesh->pVerArr + vertex_index);
 
 	REAL ccw1 = CounterClockWise(pV1, pV2, pVer);
 	REAL ccw2 = CounterClockWise(pV2, pV3, pVer);
 	REAL ccw3 = CounterClockWise(pV3, pV1, pVer);
 
 	REAL r = -1;
-	if (ccw1>0 && ccw2>0 && ccw3>0)
+	if (ccw1 > 0 && ccw2 > 0 && ccw3 > 0)
 	{
 		r = 1;
 	}
-	else if(ccw1*ccw2*ccw3 == 0 && (ccw1*ccw2 > 0 || ccw1*ccw3 > 0 || ccw2*ccw3 > 0) )
+	else if (ccw1*ccw2*ccw3 == 0 && (ccw1*ccw2 > 0 || ccw1*ccw3 > 0 || ccw2*ccw3 > 0))
 	{
 		r = 0;
 	}
@@ -288,7 +288,7 @@ REAL InTriangle(MESH_PTR pMesh, VERTEX2D_PTR pVer, TRIANGLE_PTR pTri)
 // 6.return DT(a,b,c,v1,v2,...,vi)
 void Insert(MESH_PTR pMesh, int ver_index)
 {
-	VERTEX2D_PTR pVer = (VERTEX2D_PTR)(pMesh->pVerArr+ver_index);
+	VERTEX2D_PTR pVer = (VERTEX2D_PTR)(pMesh->pVerArr + ver_index);
 	TRIANGLE_PTR pTargetTri = NULL;
 	TRIANGLE_PTR pEqualTri1 = NULL;
 	TRIANGLE_PTR pEqualTri2 = NULL;
@@ -298,16 +298,16 @@ void Insert(MESH_PTR pMesh, int ver_index)
 	while (pTri != NULL)
 	{
 		REAL r = InTriangle(pMesh, pVer, pTri);
-		if(r > 0) // should be in triangle
+		if (r > 0) // should be in triangle
 		{
 			pTargetTri = pTri;
 		}
 		else if (r == 0) // should be on edge
 		{
-			if(j == 0)
+			if (j == 0)
 			{
 				pEqualTri1 = pTri;
-				j++;				
+				j++;
 			}
 			else
 			{
@@ -336,8 +336,8 @@ void InsertInTriangle(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	TRIANGLE_PTR pTri = NULL;
 	TRIANGLE_PTR pNewTri = NULL;
 
-	pTri = pTargetTri;	
-	if(pTri == NULL)
+	pTri = pTargetTri;
+	if (pTri == NULL)
 	{
 		return;
 	}
@@ -348,14 +348,14 @@ void InsertInTriangle(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	index_c = pTri->i3;
 
 	// Insert edge pa, pb, pc
-	for(int i=0; i<3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		// allocate memory
-		if(i == 0)
+		if (i == 0)
 		{
 			pNewTri = AddTriangleNode(pMesh, pTri, index_a, index_b, ver_index);
 		}
-		else if(i == 1)
+		else if (i == 1)
 		{
 			pNewTri = AddTriangleNode(pMesh, pTri, index_b, index_c, ver_index);
 		}
@@ -376,9 +376,9 @@ void InsertInTriangle(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	}
 
 	// Get the three sub-triangles
-	pTri = pTargetTri;	
+	pTri = pTargetTri;
 	TRIANGLE_PTR pTestTri[3];
-	for (int i=0; i< 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		pTestTri[i] = pTri->pNext;
 
@@ -388,7 +388,7 @@ void InsertInTriangle(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	// remove the Target Triangle
 	RemoveTriangleNode(pMesh, pTargetTri);
 
-	for (int i=0; i< 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		// Flip test
 		FlipTest(pMesh, pTestTri[i]);
@@ -401,8 +401,8 @@ void InsertOnEdge(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	TRIANGLE_PTR pTri = NULL;
 	TRIANGLE_PTR pNewTri = NULL;
 
-	pTri = pTargetTri;	
-	if(pTri == NULL)
+	pTri = pTargetTri;
+	if (pTri == NULL)
 	{
 		return;
 	}
@@ -413,21 +413,21 @@ void InsertOnEdge(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	index_c = pTri->i3;
 
 	// Insert edge pa, pb, pc
-	for(int i=0; i<3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		// allocate memory
-		if(i == 0)
+		if (i == 0)
 		{
 			pNewTri = AddTriangleNode(pMesh, pTri, index_a, index_b, ver_index);
 		}
-		else if(i == 1)
+		else if (i == 1)
 		{
 			pNewTri = AddTriangleNode(pMesh, pTri, index_b, index_c, ver_index);
 		}
 		else
 		{
 			pNewTri = AddTriangleNode(pMesh, pTri, index_c, index_a, ver_index);
-		}		
+		}
 
 		// go to next item
 		if (pNewTri != NULL)
@@ -441,9 +441,9 @@ void InsertOnEdge(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	}
 
 	// Get the two sub-triangles
-	pTri = pTargetTri;	
+	pTri = pTargetTri;
 	TRIANGLE_PTR pTestTri[2];
-	for (int i=0; i< 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		pTestTri[i] = pTri->pNext;
 		pTri = pTri->pNext;
@@ -452,7 +452,7 @@ void InsertOnEdge(MESH_PTR pMesh, TRIANGLE_PTR pTargetTri, int ver_index)
 	// remove the Target Triangle
 	RemoveTriangleNode(pMesh, pTargetTri);
 
-	for (int i=0; i< 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		// Flip test
 		FlipTest(pMesh, pTestTri[i]);
@@ -475,7 +475,7 @@ bool FlipTest(MESH_PTR pMesh, TRIANGLE_PTR pTestTri)
 	int index_b = pTestTri->i2;
 	int index_p = pTestTri->i3;
 
-	int statify[3]={0,0,0};
+	int statify[3] = { 0, 0, 0 };
 	int vertex_index;
 	int* pi;
 	int k = 1;
@@ -491,33 +491,33 @@ bool FlipTest(MESH_PTR pMesh, TRIANGLE_PTR pTestTri)
 		statify[2] = 0;
 
 		pi = &(pTri->i1);
-		for (int j=0, k = 1; j<3; j++, k*= 2)
+		for (int j = 0, k = 1; j < 3; j++, k *= 2)
 		{
 			vertex_index = *pi++;
-			if(vertex_index == index_a || vertex_index == index_b)
+			if (vertex_index == index_a || vertex_index == index_b)
 			{
 				statify[j] = k;
 			}
 		}
 
-		switch(statify[0] | statify[1] | statify[2] )
+		switch (statify[0] | statify[1] | statify[2])
 		{
 		case 3:
-			if(CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr+index_a), (VERTEX2D_PTR)(pMesh->pVerArr+index_b), (VERTEX2D_PTR)(pMesh->pVerArr+pTri->i3)) < 0)
+			if (CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr + index_a), (VERTEX2D_PTR)(pMesh->pVerArr + index_b), (VERTEX2D_PTR)(pMesh->pVerArr + pTri->i3)) < 0)
 			{
 				index_d = pTri->i3;
 			}
 
 			break;
 		case 5:
-			if(CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr+index_a), (VERTEX2D_PTR)(pMesh->pVerArr+index_b), (VERTEX2D_PTR)(pMesh->pVerArr+pTri->i2)) < 0)
+			if (CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr + index_a), (VERTEX2D_PTR)(pMesh->pVerArr + index_b), (VERTEX2D_PTR)(pMesh->pVerArr + pTri->i2)) < 0)
 			{
 				index_d = pTri->i2;
 			}
 
 			break;
-		case 6: 
-			if(CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr+index_a), (VERTEX2D_PTR)(pMesh->pVerArr+index_b), (VERTEX2D_PTR)(pMesh->pVerArr+pTri->i1)) < 0)
+		case 6:
+			if (CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr + index_a), (VERTEX2D_PTR)(pMesh->pVerArr + index_b), (VERTEX2D_PTR)(pMesh->pVerArr + pTri->i1)) < 0)
 			{
 				index_d = pTri->i1;
 			}
@@ -530,20 +530,20 @@ bool FlipTest(MESH_PTR pMesh, TRIANGLE_PTR pTestTri)
 
 		if (index_d != -1)
 		{
-			VERTEX2D_PTR pa = (VERTEX2D_PTR)(pMesh->pVerArr+index_a);
-			VERTEX2D_PTR pb = (VERTEX2D_PTR)(pMesh->pVerArr+index_b);
-			VERTEX2D_PTR pd = (VERTEX2D_PTR)(pMesh->pVerArr+index_d);
-			VERTEX2D_PTR pp = (VERTEX2D_PTR)(pMesh->pVerArr+index_p);
+			VERTEX2D_PTR pa = (VERTEX2D_PTR)(pMesh->pVerArr + index_a);
+			VERTEX2D_PTR pb = (VERTEX2D_PTR)(pMesh->pVerArr + index_b);
+			VERTEX2D_PTR pd = (VERTEX2D_PTR)(pMesh->pVerArr + index_d);
+			VERTEX2D_PTR pp = (VERTEX2D_PTR)(pMesh->pVerArr + index_p);
 
-			if(InCircle( pa, pb, pp, pd) < 0) // not local Delaunay
+			if (InCircle(pa, pb, pp, pd) < 0) // not local Delaunay
 			{
 				flipped = true;
 
 				// add new triangle adp,  dbp, remove abp, abd.
 				// allocate memory for adp
-				TRIANGLE_PTR pT1 = AddTriangleNode(pMesh, pTestTri, pTestTri->i1, index_d, pTestTri->i3);				
+				TRIANGLE_PTR pT1 = AddTriangleNode(pMesh, pTestTri, pTestTri->i1, index_d, pTestTri->i3);
 				// allocate memory for dbp
-				TRIANGLE_PTR pT2 = AddTriangleNode(pMesh, pT1, index_d, pTestTri->i2, index_p);				
+				TRIANGLE_PTR pT2 = AddTriangleNode(pMesh, pT1, index_d, pTestTri->i2, index_p);
 				// remove abp
 				RemoveTriangleNode(pMesh, pTestTri);
 				// remove abd
@@ -553,7 +553,7 @@ bool FlipTest(MESH_PTR pMesh, TRIANGLE_PTR pTestTri)
 				FlipTest(pMesh, pT2); // pNewTestTri2  satisfies CCW order
 
 				break;
-			}			
+			}
 		}
 
 		// go to next item	
@@ -621,14 +621,14 @@ void RemoveTriangleNode(MESH_PTR pMesh, TRIANGLE_PTR pTri)
 	}
 
 	// deallocate memory
-	free(pTri);	
+	free(pTri);
 }
 
 // Create a new node and add it into triangle list
 TRIANGLE_PTR AddTriangleNode(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int i2, int i3)
 {
 	// test if 3 vertices are co-linear
-	if(CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr+i1), (VERTEX2D_PTR)(pMesh->pVerArr+i2), (VERTEX2D_PTR)(pMesh->pVerArr+i3)) == 0)
+	if (CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr + i1), (VERTEX2D_PTR)(pMesh->pVerArr + i2), (VERTEX2D_PTR)(pMesh->pVerArr + i3)) == 0)
 	{
 		return NULL;
 	}
@@ -652,7 +652,7 @@ TRIANGLE_PTR AddTriangleNode(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int 
 		pNewTestTri->pNext = pPrevTri->pNext;
 		pNewTestTri->pPrev = pPrevTri;
 
-		if(pPrevTri->pNext != NULL)
+		if (pPrevTri->pNext != NULL)
 		{
 			pPrevTri->pNext->pPrev = pNewTestTri;
 		}
@@ -667,7 +667,7 @@ TRIANGLE_PTR AddTriangleNode(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int 
 TRIANGLE_PTR AddTriangleNode2(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int i2, int i3)
 {
 	// test if 3 vertices are co-linear
-	if(CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr+i1), (VERTEX2D_PTR)(pMesh->pVerArr+i2), (VERTEX2D_PTR)(pMesh->pVerArr+i3)) == 0)
+	if (CounterClockWise((VERTEX2D_PTR)(pMesh->pVerArr + i1), (VERTEX2D_PTR)(pMesh->pVerArr + i2), (VERTEX2D_PTR)(pMesh->pVerArr + i3)) == 0)
 	{
 		return NULL;
 	}
@@ -678,7 +678,7 @@ TRIANGLE_PTR AddTriangleNode2(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int
 	pNewTestTri->i1 = i1;
 	pNewTestTri->i2 = i2;
 	pNewTestTri->i3 = i3;
-	pNewTestTri->changeFlag=false;
+	pNewTestTri->changeFlag = false;
 	// insert after prev triangle
 	if (pPrevTri == NULL) // add root
 	{
@@ -691,7 +691,7 @@ TRIANGLE_PTR AddTriangleNode2(MESH_PTR pMesh, TRIANGLE_PTR pPrevTri, int i1, int
 		pNewTestTri->pNext = pPrevTri->pNext;
 		pNewTestTri->pPrev = pPrevTri;
 
-		if(pPrevTri->pNext != NULL)
+		if (pPrevTri->pNext != NULL)
 		{
 			pPrevTri->pNext->pPrev = pNewTestTri;
 		}

@@ -93,7 +93,7 @@ cityModel::cityModel(string jsonFile)
 	}
 	if (flag1&&flag2&&flag3&&flag4&&flag5)
 	{
-		LoadModel(name, _v, _h,_p.toStdString());
+		LoadModel(_name.toStdString(), _v, _h,_p.toStdString());
 	}
 }
 

@@ -6,6 +6,8 @@
 #include "para/modelPara.h"
 #include "para/computePara.h"
 #include "para/visualPara.h"
+
+#include "../Model/modelManager.h"
 /************************************************************************/
 /* 单例模式                                                                     */
 /************************************************************************/
@@ -18,6 +20,7 @@ public:
 	ComputePara* cptPara;
 	visPara *visualPara;
 	
+	ModelManager * modelManager;
 
 
 	~globalContext();

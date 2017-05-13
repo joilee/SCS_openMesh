@@ -28,6 +28,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <glWidget.h>
+#include "./ui/tree/scsTreeWidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -76,23 +77,18 @@ public:
     QDockWidget *dockWidget_outline;
     QWidget *dockWidgetContents_2;
     QVBoxLayout *verticalLayout_5;
-    QVBoxLayout *verticalLayout_4;
     QTreeWidget *treeWidget_project;
-    QDockWidget *dockWidget_2;
-    QWidget *dockWidgetContents_5;
-    QVBoxLayout *verticalLayout_3;
-    QDockWidget *dockWidget_para;
-    QWidget *dockWidgetContents_3;
-    QVBoxLayout *verticalLayout_6;
-    QTreeWidget *treeWidget_para;
-    QDockWidget *dockWidget_localsecene;
-    QWidget *dockWidgetContents_4;
+    QDockWidget *dockWidget;
+    scs_GUI::scsTreeWidget *dockWidgetContents_3;
+    QDockWidget *dockWidget_Property;
+    QWidget *dockWidgetContents_6;
+    QVBoxLayout *verticalLayout_4;
 
     void setupUi(QMainWindow *MainWindowClass)
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1191, 837);
+        MainWindowClass->resize(1187, 837);
         MainWindowClass->setMinimumSize(QSize(1024, 768));
         action = new QAction(MainWindowClass);
         action->setObjectName(QStringLiteral("action"));
@@ -140,6 +136,7 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         tabWidget_Dispaly = new QTabWidget(centralWidget);
         tabWidget_Dispaly->setObjectName(QStringLiteral("tabWidget_Dispaly"));
+        tabWidget_Dispaly->setBaseSize(QSize(0, 100));
         tabWidget_Dispaly->setTabPosition(QTabWidget::South);
         ModelView = new GLWidget();
         ModelView->setObjectName(QStringLiteral("ModelView"));
@@ -156,7 +153,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1191, 23));
+        menuBar->setGeometry(QRect(0, 0, 1187, 23));
         menuFILE = new QMenu(menuBar);
         menuFILE->setObjectName(QStringLiteral("menuFILE"));
         menuMesh = new QMenu(menuBar);
@@ -176,7 +173,7 @@ public:
         MainWindowClass->setStatusBar(statusBar);
         dockWidget_outputLog = new QDockWidget(MainWindowClass);
         dockWidget_outputLog->setObjectName(QStringLiteral("dockWidget_outputLog"));
-        dockWidget_outputLog->setMinimumSize(QSize(128, 139));
+        dockWidget_outputLog->setMinimumSize(QSize(147, 187));
         dockWidget_outputLog->setFeatures(QDockWidget::DockWidgetFloatable);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
@@ -215,66 +212,40 @@ public:
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setSpacing(6);
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         treeWidget_project = new QTreeWidget(dockWidgetContents_2);
         QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
         __qtreewidgetitem->setText(0, QStringLiteral("1"));
         treeWidget_project->setHeaderItem(__qtreewidgetitem);
         treeWidget_project->setObjectName(QStringLiteral("treeWidget_project"));
+        treeWidget_project->setMinimumSize(QSize(0, 200));
 
-        verticalLayout_4->addWidget(treeWidget_project);
-
-
-        verticalLayout_5->addLayout(verticalLayout_4);
+        verticalLayout_5->addWidget(treeWidget_project);
 
         dockWidget_outline->setWidget(dockWidgetContents_2);
         MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_outline);
-        dockWidget_2 = new QDockWidget(MainWindowClass);
-        dockWidget_2->setObjectName(QStringLiteral("dockWidget_2"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(dockWidget_2->sizePolicy().hasHeightForWidth());
-        dockWidget_2->setSizePolicy(sizePolicy);
-        dockWidget_2->setMinimumSize(QSize(250, 56));
-        dockWidget_2->setFeatures(QDockWidget::NoDockWidgetFeatures);
-        dockWidgetContents_5 = new QWidget();
-        dockWidgetContents_5->setObjectName(QStringLiteral("dockWidgetContents_5"));
-        verticalLayout_3 = new QVBoxLayout(dockWidgetContents_5);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        dockWidget_2->setWidget(dockWidgetContents_5);
-        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(2), dockWidget_2);
-        dockWidget_para = new QDockWidget(MainWindowClass);
-        dockWidget_para->setObjectName(QStringLiteral("dockWidget_para"));
-        dockWidget_para->setMinimumSize(QSize(89, 300));
-        dockWidget_para->setFeatures(QDockWidget::DockWidgetFloatable);
-        dockWidgetContents_3 = new QWidget();
+        dockWidget = new QDockWidget(MainWindowClass);
+        dockWidget->setObjectName(QStringLiteral("dockWidget"));
+        dockWidgetContents_3 = new scs_GUI::scsTreeWidget();
         dockWidgetContents_3->setObjectName(QStringLiteral("dockWidgetContents_3"));
-        verticalLayout_6 = new QVBoxLayout(dockWidgetContents_3);
-        verticalLayout_6->setSpacing(6);
-        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        treeWidget_para = new QTreeWidget(dockWidgetContents_3);
-        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
-        __qtreewidgetitem1->setText(0, QStringLiteral("1"));
-        treeWidget_para->setHeaderItem(__qtreewidgetitem1);
-        treeWidget_para->setObjectName(QStringLiteral("treeWidget_para"));
-
-        verticalLayout_6->addWidget(treeWidget_para);
-
-        dockWidget_para->setWidget(dockWidgetContents_3);
-        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_para);
-        dockWidget_localsecene = new QDockWidget(MainWindowClass);
-        dockWidget_localsecene->setObjectName(QStringLiteral("dockWidget_localsecene"));
-        dockWidget_localsecene->setMinimumSize(QSize(80, 100));
-        dockWidgetContents_4 = new QWidget();
-        dockWidgetContents_4->setObjectName(QStringLiteral("dockWidgetContents_4"));
-        dockWidget_localsecene->setWidget(dockWidgetContents_4);
-        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(2), dockWidget_localsecene);
+        dockWidgetContents_3->setStyleSheet(QLatin1String("*{\n"
+"    border-style: outset;\n"
+"    border-width: 5px;\n"
+"\n"
+"    border-color: beige;\n"
+"}"));
+        dockWidget->setWidget(dockWidgetContents_3);
+        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
+        dockWidget_Property = new QDockWidget(MainWindowClass);
+        dockWidget_Property->setObjectName(QStringLiteral("dockWidget_Property"));
+        dockWidget_Property->setMinimumSize(QSize(220, 200));
+        dockWidgetContents_6 = new QWidget();
+        dockWidgetContents_6->setObjectName(QStringLiteral("dockWidgetContents_6"));
+        verticalLayout_4 = new QVBoxLayout(dockWidgetContents_6);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        dockWidget_Property->setWidget(dockWidgetContents_6);
+        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(2), dockWidget_Property);
 
         menuBar->addAction(menuFILE->menuAction());
         menuBar->addAction(menuMesh->menuAction());
@@ -310,7 +281,7 @@ public:
 
         retranslateUi(MainWindowClass);
 
-        tabWidget_Dispaly->setCurrentIndex(2);
+        tabWidget_Dispaly->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -348,9 +319,7 @@ public:
         menuAbout->setTitle(QApplication::translate("MainWindowClass", "About", 0));
         dockWidget_outputLog->setWindowTitle(QApplication::translate("MainWindowClass", "\346\227\245\345\277\227", 0));
         dockWidget_outline->setWindowTitle(QApplication::translate("MainWindowClass", "\347\233\256\345\275\225", 0));
-        dockWidget_2->setWindowTitle(QApplication::translate("MainWindowClass", "\345\273\272\347\255\221\347\211\251\345\234\272\346\231\257\346\225\260\346\215\256", 0));
-        dockWidget_para->setWindowTitle(QApplication::translate("MainWindowClass", "\345\217\202\346\225\260", 0));
-        dockWidget_localsecene->setWindowTitle(QApplication::translate("MainWindowClass", "\345\261\200\351\203\250\345\234\272\346\231\257\346\225\260\346\215\256", 0));
+        dockWidget_Property->setWindowTitle(QApplication::translate("MainWindowClass", "\345\261\236\346\200\247", 0));
     } // retranslateUi
 
 };

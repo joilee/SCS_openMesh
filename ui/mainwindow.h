@@ -6,18 +6,17 @@
 #include "outdoorFile.h"
 #include "InfoPage.h"
 #include "computerOptionDialog.h"
-#include "geometry/emxModel.h"
-#include "rasterHeight/Mesh.h"
-#include "rasterHeight/TriMesh.h"
+
 #include "meshOption.h"
 #include "plugin/PluginInterface.h"
 #include <QtWidgets/QMessageBox>
 #include "Context/context.h"
 
 #include "Model/abstractModel.h"
-#include "Model/abstractModelManager.h"
+#include "Model/abstractModelFactory.h"
 #include "Model/cityModel/cityModel.h"
-#include "Model/cityModel/cityModelManager.h"
+#include "Model/cityModel/cityModelFactory.h"
+#include "scsModelTable.h"
 
 
 class QAction; 
@@ -44,7 +43,7 @@ private slots:
 	void openOutdoorFile();
 	void computerOption();
 	void loadAllFile(QString _name,QStringList _v,QStringList _h,QString _p);
-	void showAll();
+	void showAll();  
 	void showLocal();
 	void openTransAntenna_ParamFile();
 	void openTransAntennas_DirGain();
@@ -73,9 +72,10 @@ private:
 
 	outdoorFileDialog*  M_outdoorFileDialog;
 	computerOptionDialog* M_computeroptionDialog;
-	BuildingInfoPage * bip;
-	localPage *lpg;
+
 	meshOptionDialog *mod;
+
+	scsModelTable* modelTable;
 	//内部变量
  private:
 	 QString material_path;
@@ -85,17 +85,6 @@ private:
 	 /************************************************************************/
 	 /* 整个场景 建筑物                                                                     */
 	 /************************************************************************/
-	 QString buildingName;
-	 vector<building> total_Buildings;  //整体模型
-	 Vector3d MaxPoint,MinPoint;
-	
-
-	 QStringList Scene2DInfoFile_paths;//建筑物地面
-	 QStringList SceneHeightInfoFile_paths;//建筑物高度
-	 QString ScenePlaneHeightInfoFile_path;//地面海拔
-
-	 QString Scene2DInfoFile_path;//临时变量
-	 QString SceneHeightInfoFile_path;//临时变量
 
 
 
@@ -105,7 +94,7 @@ private:
 	 /************************************************************************/
 	 QString objName;
 	 QString OBJFile_path;
-	 //emxModel * triangleModel;//局部模型，存储obj模型或者建筑物加地面的三角面片,局部模型
+
 	 
 	 /************************************************************************/
 	 /* plugin 参数                                                                     */
@@ -114,13 +103,11 @@ private:
 
 	 //
 
-	 abstractModel* cityScene;
-	 abstractModelManager* cityManager;
+
 
 	 //读建筑物以及高度
-	 void ReadScenePlanetFile(const char*filename_2D, const char*filename_Height, Vector3d& MaxPoint, Vector3d& MinPoint);
-	 void LocalGround(MESH_PTR pMesh,Vector3d AP_position, double LocalRange);//
-	 void LocalBuilding(vector< building> &Local_buildings, Vector3d AP_position, double LocalRange);
+
+
 	 void init();
 	 void createActions();
 };

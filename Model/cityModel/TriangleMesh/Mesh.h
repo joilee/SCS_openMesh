@@ -1,4 +1,4 @@
-﻿#ifndef H_MESH
+#ifndef H_MESH
 #define H_MESH
 
 //
@@ -15,8 +15,8 @@
 #include "stdio.h"
 #include "math.h"
 #include "stdlib.h"
-#include "defaultPara.h"
-#include "geometry/meshStruct.h"
+
+#include "meshStruct.h"
 #ifndef NOMINMAX                       
 #  define NOMINMAX
 #endif
