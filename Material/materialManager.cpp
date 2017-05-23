@@ -43,8 +43,23 @@ void scsMaterialManager:: addMatertial(string path)
 }
 scsMaterialManager::scsMaterialManager()
 {
+	material_ID = 43;//默认是混凝土文件
 }
 
 scsMaterialManager::~scsMaterialManager()
 {
+
+}
+
+int  scsMaterialManager::getDefaultMaterial(){
+	return material_ID;
+}
+
+void scsMaterialManager:: setDefault(int i)
+{
+	if (i>=0&&i<materialdatabase.size())
+	{
+		material_ID = i;
+	}
+	cout << "info: 设置默认材料编号是 i" << endl;
 }

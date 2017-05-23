@@ -40,7 +40,7 @@ void MainWindow::init()
 
 
 	 plugin_file_path="";
-	material_ID=43;//默认是混凝土文件
+	
 
 	//左侧目录
 	ui.treeWidget_project->setHeaderLabels(QStringList()<<QStringLiteral("项目")<<QStringLiteral("属性")); 
@@ -146,16 +146,13 @@ void MainWindow::saveLocalScene()
 	
 }
 
-void MainWindow::loadMaterial(QString path)
-{
-
-}
 
 void MainWindow::open_material()
 {
 	
 	QString path = QFileDialog::getOpenFileName(this,QStringLiteral("打开材质文件"),"./",QStringLiteral("txt 材质文件 (*.txt)"));
-	loadMaterial(path);
+	globalContext *globalCtx = globalContext::GetInstance();
+	globalCtx->matManager->addMatertial(path.toStdString());
 	
 }
 
@@ -174,13 +171,15 @@ void MainWindow::setMaterial()
 	int i = QInputDialog::getInt(this, QStringLiteral("材质信息"),
 		QStringLiteral("编号:"), 10, 0, 78, 1, &ok);
 	if (ok)
-		material_ID=i;
-	outputLog(QString(QStringLiteral("设置材质编号为：")+QString::number(material_ID,10)));
+	{
+		globalContext *globalCtx = globalContext::GetInstance();
+		globalCtx->matManager->setDefault(i);
+	}
+		
+	outputLog(QString(QStringLiteral("设置材质编号为：")+QString::number(i,10)));
 }
 
-int  MainWindow::getDefaultMaterial(){
-	return material_ID;
-}
+
 
 /************************************************************************/
 /* 根据路径，读取文件，存放到对应的变量中                                              */

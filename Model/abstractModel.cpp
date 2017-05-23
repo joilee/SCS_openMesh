@@ -12,7 +12,9 @@ string abstractModel::getName()
 {
 	return NULL;
 }
-void abstractModel:: draw()
+void abstractModel:: draw(int mode)
 {
 
 }
+void abstractModel::initDraw()
+{}
