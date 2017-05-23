@@ -81,9 +81,10 @@ void computerOptionDialog::changePage(QListWidgetItem *current, QListWidgetItem 
 void computerOptionDialog::getPara()
 {
 	globalContext *gctx=globalContext::GetInstance();
-	gctx->cptPara->phi=es->getAngle();
-	fp->getFieldPoint(gctx->cptPara->leftUpX,gctx->cptPara->leftUpY,gctx->cptPara->rightDownX,gctx->cptPara->rightDownY,gctx->cptPara->precision,gctx->cptPara->altitude);
-	sa->getSimuArgu(gctx->cptPara->reflectNumPara,gctx->cptPara->refractNumPara,gctx->cptPara->diffractionNumPara,gctx->cptPara->isDiffractionPara,gctx->cptPara->transIndex,gctx->cptPara->RT_sample,gctx->cptPara->RT_radius,gctx->cptPara->RT_BeamNum);
+	ComputePara *tmp = gctx->cptManager->getComputationPara();
+	tmp->phi=es->getAngle();
+	fp->getFieldPoint(tmp->leftUpX, tmp->leftUpY, tmp->rightDownX, tmp->rightDownY, tmp->precision, tmp->altitude);
+	sa->getSimuArgu(tmp->reflectNumPara, tmp->refractNumPara, tmp->diffractionNumPara, tmp->isDiffractionPara, tmp->transIndex, tmp->RT_sample, tmp->RT_radius, tmp->RT_BeamNum);
 	QMessageBox::information(this, QStringLiteral("计算参数"), QStringLiteral("参数设置成功"), QMessageBox::Yes , QMessageBox::Yes);
 }
 

@@ -105,7 +105,7 @@ cityModel::~cityModel()
 void cityModel::LoadModel(string _name, QStringList _v, QStringList _h, string _p)
 {
 	name = _name;
-	if (_v.isEmpty())
+	if (_v.isEmpty()) 
 	{
 		QMessageBox::warning(NULL, QStringLiteral("文件导入"), QStringLiteral("请先导入建筑物二维信息文件"));
 		return;
@@ -127,7 +127,11 @@ void cityModel::LoadModel(string _name, QStringList _v, QStringList _h, string _
 	cout << "Info: " << "模型导入共耗时" << (end_time - start_time)  << "ms" << endl;
 
 }
-void cityModel:: draw()
+void cityModel:: draw(int mode)
+{
+
+}
+void cityModel::initDraw()
 {
 
 }

@@ -59,8 +59,8 @@ cityGround::cityGround(const cityGround &cg, Vector3d AP_position, double LocalR
 	base = cg.getPrecesion();
 	xmin = cg.getXmin() + leftCol*base;
 	xmax = cg.getXmin() +rightCol*base;
-	ymin = cg.getYmax() - upRow*base;
-	ymax = cg.getYmax() - downRow*base;
+	ymax = cg.getYmax() - upRow*base;
+	ymin = cg.getYmax() - downRow*base;
 	groundMatrix.resize(row, vector<int>(col));
 	for (int i = 0; i < row;i++)
 	{

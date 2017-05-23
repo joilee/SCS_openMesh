@@ -9,7 +9,8 @@ public:
 	virtual ~abstractModel();
 
 	virtual string  getName();
-	void virtual draw();
+	void virtual draw(int mode);
+	void virtual initDraw();
 private:
 
 };

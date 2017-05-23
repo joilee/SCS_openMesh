@@ -77,10 +77,10 @@ void meshOptionDialog::onRefreshButton()
 {
 	globalContext *globalCtx=globalContext::GetInstance();
 	
-	if (globalCtx->cptPara->Sites.size()!=0)
+	if (globalCtx->cptManager->getComputationPara()->Sites.size()!=0)
 	{
 		cbo_XYZ->blockSignals(true);
-		std::vector<Site> &tmpSite=globalCtx->cptPara->Sites;
+		std::vector<Site> &tmpSite = globalCtx->cptManager->getSite();
 		cbo_XYZ->clear();
 		cbo_XYZ->addItem(QStringLiteral("自定义"));  
 		for(int i=0;i<tmpSite.size();i++)
@@ -105,7 +105,7 @@ void meshOptionDialog::dynamicLoadSite(int index)
 	}else
 	{
 		globalContext *globalCtx=globalContext::GetInstance();
-		std::vector<Site> &tmpSite=globalCtx->cptPara->Sites;
+		std::vector<Site> &tmpSite = globalCtx->cptManager->getSite();
 		Vector3d AP_postion=tmpSite[index-1].Site_Antennas[0].position;
 		centerXLE->setText(QString::number(AP_postion.x));
 		centerYLE->setText(QString::number(AP_postion.y,'g',7));

@@ -8,6 +8,8 @@
 #include "para/visualPara.h"
 
 #include "../Model/modelManager.h"
+#include "../Computation/computeManager.h"
+#include "../Material/materialManager.h"
 /************************************************************************/
 /* 单例模式                                                                     */
 /************************************************************************/
@@ -17,12 +19,12 @@ public:
 
 	//
 	ModelPara * modelPara;
-	ComputePara* cptPara;
+	//ComputePara* cptPara;
 	visPara *visualPara;
 	
 	ModelManager * modelManager;
-
-
+	computeManager * cptManager;
+	scsMaterialManager * matManager;
 	~globalContext();
 	static globalContext*GetInstance()
 	{

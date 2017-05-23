@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Antenna\antenna.cpp" />
+    <ClCompile Include="Computation\computeManager.cpp" />
     <ClCompile Include="Context\context.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_computeOptionPage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -150,9 +151,11 @@
     <ClCompile Include="glWidget.cpp" />
     <ClCompile Include="io\io_simuPlane.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material\materialManager.cpp" />
+    <ClCompile Include="Material\scsMaterial.cpp" />
     <ClCompile Include="Model\abstractModel.cpp" />
     <ClCompile Include="Model\abstractModelFactory.cpp" />
-    <ClCompile Include="Model\cityModel\cityLocalScene.cpp" />
+    <ClCompile Include="Model\cityModel\cityLocalModel.cpp" />
     <ClCompile Include="Model\cityModel\cityModelFactory.cpp" />
     <ClCompile Include="Model\cityModel\cityScene.cpp" />
     <ClCompile Include="Model\cityModel\cityGround.cpp" />
@@ -182,11 +185,13 @@
     <ClCompile Include="util\emxCamera.cpp" />
     <ClCompile Include="util\HsvToRgb.cpp" />
     <ClCompile Include="util\Quaternion.cpp" />
+    <ClCompile Include="util\stringUtil.cpp" />
     <ClCompile Include="visualData\visualModelItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Antenna\antenna.h" />
     <ClInclude Include="Antenna\receiver.h" />
+    <ClInclude Include="Computation\computeManager.h" />
     <ClInclude Include="Context\context.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="GeneratedFiles\ui_outdoorFile.h" />
@@ -197,9 +202,10 @@
     <ClInclude Include="geometry\emxPoint.h" />
     <ClInclude Include="geometry\emxRayD.h" />
     <ClInclude Include="geometry\emxVertex.h" />
-    <ClInclude Include="geometry\meshStruct.h" />
     <ClInclude Include="geometry\SphereBeam.h" />
     <ClInclude Include="GLHelper\MeshGLEnv.h" />
+    <ClInclude Include="Material\materialManager.h" />
+    <ClInclude Include="Material\scsMaterial.h" />
     <ClInclude Include="Model\abstractModel.h" />
     <ClInclude Include="Model\abstractModelFactory.h" />
     <ClInclude Include="observer\modelSubject.h" />
@@ -213,6 +219,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="util\stringUtil.h" />
     <ClInclude Include="visualData\visualModelItem.h" />
     <CustomBuild Include="glWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -229,7 +236,7 @@
     <ClInclude Include="Model\cityModel\cityScene.h" />
     <ClInclude Include="Model\cityModel\cityGround.h" />
     <ClInclude Include="Model\cityModel\cityGroundVector.h" />
-    <ClInclude Include="Model\cityModel\cityLocalScene.h" />
+    <ClInclude Include="Model\cityModel\cityLocalModel.h" />
     <ClInclude Include="Model\cityModel\cityModel.h" />
     <ClInclude Include="Model\cityModel\TriangleMesh\cannyImage.h" />
     <ClInclude Include="Model\cityModel\TriangleMesh\Mesh.h" />

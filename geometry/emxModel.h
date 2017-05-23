@@ -11,7 +11,7 @@
 #include "util\emxUtilityInc.h"
 #include "emxVertex.h"
 #include "emxFace.h"
-#include "meshStruct.h"
+#include "../Model/cityModel/TriangleMesh/meshStruct.h"
 #include "dataStruct.h"
 class emxVertex;
 class emxFace;

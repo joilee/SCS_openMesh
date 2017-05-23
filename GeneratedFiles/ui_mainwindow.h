@@ -88,7 +88,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1187, 837);
+        MainWindowClass->resize(1024, 864);
         MainWindowClass->setMinimumSize(QSize(1024, 768));
         action = new QAction(MainWindowClass);
         action->setObjectName(QStringLiteral("action"));
@@ -153,7 +153,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1187, 23));
+        menuBar->setGeometry(QRect(0, 0, 1024, 23));
         menuFILE = new QMenu(menuBar);
         menuFILE->setObjectName(QStringLiteral("menuFILE"));
         menuMesh = new QMenu(menuBar);
@@ -175,6 +175,7 @@ public:
         dockWidget_outputLog->setObjectName(QStringLiteral("dockWidget_outputLog"));
         dockWidget_outputLog->setMinimumSize(QSize(147, 187));
         dockWidget_outputLog->setFeatures(QDockWidget::DockWidgetFloatable);
+        dockWidget_outputLog->setAllowedAreas(Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         verticalLayout_2 = new QVBoxLayout(dockWidgetContents);
@@ -225,6 +226,7 @@ public:
         MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_outline);
         dockWidget = new QDockWidget(MainWindowClass);
         dockWidget->setObjectName(QStringLiteral("dockWidget"));
+        dockWidget->setAllowedAreas(Qt::BottomDockWidgetArea|Qt::LeftDockWidgetArea|Qt::TopDockWidgetArea);
         dockWidgetContents_3 = new scs_GUI::scsTreeWidget();
         dockWidgetContents_3->setObjectName(QStringLiteral("dockWidgetContents_3"));
         dockWidgetContents_3->setStyleSheet(QLatin1String("*{\n"
@@ -238,6 +240,7 @@ public:
         dockWidget_Property = new QDockWidget(MainWindowClass);
         dockWidget_Property->setObjectName(QStringLiteral("dockWidget_Property"));
         dockWidget_Property->setMinimumSize(QSize(220, 200));
+        dockWidget_Property->setAllowedAreas(Qt::BottomDockWidgetArea|Qt::LeftDockWidgetArea);
         dockWidgetContents_6 = new QWidget();
         dockWidgetContents_6->setObjectName(QStringLiteral("dockWidgetContents_6"));
         verticalLayout_4 = new QVBoxLayout(dockWidgetContents_6);
@@ -245,7 +248,7 @@ public:
         verticalLayout_4->setContentsMargins(11, 11, 11, 11);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         dockWidget_Property->setWidget(dockWidgetContents_6);
-        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(2), dockWidget_Property);
+        MainWindowClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget_Property);
 
         menuBar->addAction(menuFILE->menuAction());
         menuBar->addAction(menuMesh->menuAction());

@@ -1,9 +1,6 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-//#include "util/apibase.h"
-
-//namespace emxUtility {
 
 	class  Color
 	{

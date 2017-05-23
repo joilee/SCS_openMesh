@@ -5,6 +5,7 @@
 #include "Antenna/receiver.h"
 #include "io/io_simuPlane.h"
 #include <QObject>
+#include "../util/stringUtil.h"
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -21,6 +22,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+	this->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
 	M_outdoorFileDialog=new outdoorFileDialog(this);
 	M_computeroptionDialog=new computerOptionDialog(this);
 
@@ -29,20 +32,14 @@ void MainWindow::init()
 	//将表格嵌入到dockwidget
 	modelTable = new scsModelTable;
 	modelTable->showMaximized();
-//	QWidget* tmpWidget = new QWidget();
-	//QVBoxLayout* layout = new QVBoxLayout();
-	//layout->addWidget(modelTable);
-	//tmpWidget->setLayout(layout);
 	ui.dockWidget_Property->setWidget(modelTable);
+
 	globalContext *gctx = globalContext::GetInstance();
 	gctx->modelManager->getModelSubject()->attach(modelTable);
 	//场景数据初始化
 
 
 	 plugin_file_path="";
-
-
-
 	material_ID=43;//默认是混凝土文件
 
 	//左侧目录
@@ -164,7 +161,11 @@ void MainWindow::open_material()
 
 void MainWindow::setMeshOption()
 {
-
+	if (mod == NULL)
+	{
+		mod = new meshOptionDialog(this);
+	}
+	mod->exec();
 }
 
 void MainWindow::setMaterial()
@@ -211,14 +212,7 @@ void MainWindow::setModelName(int index,QString name)
 	 temp->addChild(child);
 }
 
-string Trim(string &str)   //提取不包含空格、制表符、回车、换行符的字符串
-{
-	str.erase(0,str.find_first_not_of(" \t\n\r"));    
 
-	str.erase(str.find_last_not_of(" \t\n\r") + 1);
-
-	return str;
-}
 
 void MainWindow::openTransAntennas_DirGain()
 {
@@ -227,7 +221,20 @@ void MainWindow::openTransAntennas_DirGain()
 
 void MainWindow::openTransAntenna_ParamFile()
 {
-
+	site_roots1.clear();
+	site_roots2.clear();
+	M_computeroptionDialog->es->sitesTreewidget->clear();
+	//检测是否导入场景
+	globalContext *globalCtx = globalContext::GetInstance();
+	if (!globalCtx->modelManager->checkCityExist())
+	{
+		QMessageBox::warning(this, QStringLiteral("发射天线设置"), QStringLiteral("请先加载场景"));
+		return;
+	}
+	QString path = QFileDialog::getOpenFileName(this, QStringLiteral("导入发射天线（站点）参数信息文件"), "./", QStringLiteral("csv 发射天线（站点）参数信息文件 (*.csv)"));
+	if (path.isEmpty())
+		return;
+	globalCtx->cptManager->openTransAntenna_ParamFile(path);
 }
 
 void MainWindow::openNo_SimplaneReceiverFile()
@@ -262,7 +269,32 @@ void MainWindow::loadObj()
 /************************************************************************/
 void MainWindow::meshAll()
 {
-	
+	setProgress(0);
+	globalContext *gctx = globalContext::GetInstance();
+	if (!gctx->modelManager->checkCityExist())
+	{
+		outputLog(QStringLiteral("没有导入建筑物文件，请先导入相关文件。"));
+		return;
+	}
+	else if ((gctx->modelManager->checkLocalExist()))
+	{
+		outputLog(QStringLiteral("局部场景已有模型，请先删除。"));
+		return;
+	}
+
+	Vector3d center;
+	double range;
+	//要不要加一个判断，防止错误？
+	if (mod->inputFlag)
+	{
+		mod->getValue(center, range);
+	}
+	else
+	{
+		outputLog(QStringLiteral("没有设置剖分参数"));
+		return;
+	}
+	gctx->modelManager->generateLocalModel(center, range);
 }
 
 
@@ -299,7 +331,7 @@ void MainWindow::run()
 		if (pluginTemp)
 		{
 			outputLog(QStringLiteral("开始运行计算函数"));	
-			pluginTemp->runAlgorithm(gctx->modelPara,gctx->cptPara,gctx->visualPara);
+			pluginTemp->runAlgorithm(gctx->modelPara,gctx->cptManager->getComputationPara(),gctx->visualPara);
 		    outputLog(QStringLiteral("结束计算"));
 			ui.simuPlane->setSimPlane(gctx->visualPara->vis_AP_EFieldArrays,gctx->visualPara->horizonNum,gctx->visualPara->veticalNum);
 			outputLog(QStringLiteral("显示结果"));

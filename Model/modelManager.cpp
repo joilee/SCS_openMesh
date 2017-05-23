@@ -66,14 +66,38 @@ void ModelManager::loadCityModel(string path)
 	insertModel(tmp);
 }
 
+bool ModelManager::generateLocalModel(Vector3d center, double range)
+{
+	//目前只针对遇到的第一个城市场景操作，如果没有，则退出，返回false
+	map<string, abstractModel*>::iterator it = modelMap.begin();
+	cityModel * city = NULL;
+	while (it != modelMap.end())
+	{
+		//cout << typeid(*(it->second)).name() << endl;
+		if (typeid(*(it->second)) == typeid(cityModel))
+		{
+			city = dynamic_cast<cityModel*>(it->second);
+			break;
+		}
+
+	}
+	if (city == NULL)
+	{
+		return false;
+	}
+	abstractModel * localModel = cityFac->loadModel(center, range, city);
+	cout << "success: 局部模型已经构造！" << endl;
+	insertModel(localModel);
+	return true;
+}
 void ModelManager::sendNewState()
 {
 	map<string, abstractModel*>::iterator it = modelMap.begin();
-	vector<bool> exist;//记录是否有城市场景和局部场景
-	while (it!=modelMap.end())
+	//vector<bool> exist;//记录是否有城市场景和局部场景
+	while (it != modelMap.end())
 	{
-		cout << typeid(*(it->second)).name() << endl;
-		if ( typeid(*(it->second))==typeid(cityModel))
+		//cout << typeid(*(it->second)).name() << endl;
+		if (typeid(*(it->second)) == typeid(cityModel))
 		{
 			cityModel * city = dynamic_cast<cityModel*>(it->second);
 			int cityNum = city->getCity()->getBuildingSize();
@@ -85,8 +109,85 @@ void ModelManager::sendNewState()
 			m_subject->visItem->setcityMax(MaxPos);
 			m_subject->visItem->setcityMin(MinPos);
 			m_subject->visItem->modelList[0] = city->getName();
+			break;
+		}
+		it++;
+	}
+	it = modelMap.begin();
+	while (it != modelMap.end())
+	{
+		if (typeid(*(it->second)) == typeid(cityLocalModel))
+		{
+			cityLocalModel *tmp = dynamic_cast<cityLocalModel*>(it->second);
+			int num = tmp->getTriangleNum();
+			Vector3d minPs = tmp->getMin();
+			Vector3d maxPs = tmp->getMax();
+			m_subject->visItem->setlocalMin(minPs);
+			m_subject->visItem->setlocalMax(maxPs);
+			m_subject->visItem->setLocalFaceNum(num);
+			m_subject->visItem->modelList[1] = tmp->getName();
+			break;
 		}
 		it++;
 	}
 	m_subject->notify();
+}
+
+bool ModelManager::checkCityExist()
+{
+	map<string, abstractModel*>::iterator it = modelMap.begin();
+	it = modelMap.begin();
+	while (it != modelMap.end())
+	{
+		if (typeid(*(it->second)) == typeid(cityModel))
+		{
+			return true;
+		}
+		it++;
+	}
+	return false;
+}
+
+
+bool ModelManager::checkLocalExist()
+{
+	map<string, abstractModel*>::iterator it = modelMap.begin();
+	it = modelMap.begin();
+	while (it != modelMap.end())
+	{
+		if (typeid(*(it->second)) == typeid(cityLocalModel))
+		{
+			return true;
+		}
+		it++;
+	}
+	return false;
+}
+
+cityLocalModel *ModelManager::getFirstLocal()
+{
+	map<string, abstractModel*>::iterator it = modelMap.begin();
+	while (it != modelMap.end())
+	{
+		if (typeid(*(it->second)) == typeid(cityLocalModel))
+		{
+			return dynamic_cast<cityLocalModel*>(it->second);
+		}
+		it++;
+	}
+	return NULL;
+}
+
+cityModel  *ModelManager:: getFirstCity()
+{
+	map<string, abstractModel*>::iterator it = modelMap.begin();
+	while (it != modelMap.end())
+	{
+		if (typeid(*(it->second)) == typeid(cityModel))
+		{
+			return dynamic_cast<cityModel*>(it->second);
+		}
+		it++;
+	}
+	return NULL;
 }

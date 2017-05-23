@@ -164,9 +164,6 @@
     <ClCompile Include="Model\cityModel\cityScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\cityModel\cityLocalScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Model\cityModel\TriangleMesh\cannyImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -236,6 +233,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_scsModelTable.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Model\cityModel\cityLocalModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Computation\computeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util\stringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Material\scsMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Material\materialManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Antenna\antenna.h">
@@ -272,9 +284,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geometry\emxVertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="geometry\meshStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geometry\SphereBeam.h">
@@ -340,9 +349,6 @@
     <ClInclude Include="Model\cityModel\cityGroundVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model\cityModel\cityLocalScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model\cityModel\cityScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -380,6 +386,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="observer\modelSubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\cityModel\cityLocalModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Computation\computeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util\stringUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material\scsMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material\materialManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -108,5 +108,5 @@ double cityScene:: getAltitude(double x, double y)
 	{
 		cout << "error: ground is not existed!" << endl;
 		return 0;
-	}
+	 }
 }

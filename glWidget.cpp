@@ -424,9 +424,6 @@ void GLWidget::setTriangleModel(emxModel* TriangleData)
 	  glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
 	  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*colorVector.size(), &colorVector[0], GL_STATIC_DRAW); 
 	
-
-
-
 	  drawTriangleScene = true;
 }
 

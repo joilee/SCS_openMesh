@@ -3,10 +3,12 @@
 
 globalContext::globalContext()
 {
-	cptPara=new ComputePara;
+	//cptPara=new ComputePara;
 	modelPara=new ModelPara;
 	visualPara=new visPara;
 	modelManager = new ModelManager;
+	cptManager = new computeManager;
+	matManager = new scsMaterialManager;
 }
 
 globalContext::~globalContext()
@@ -16,4 +18,5 @@ globalContext::~globalContext()
 	 {
 		 delete modelPara;
 	 }
+	 delete cptManager;
 }

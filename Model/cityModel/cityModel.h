@@ -8,7 +8,8 @@ class cityModel :public abstractModel
 public:
 	cityModel(string jsonPath);
 	~cityModel();
-	void draw();
+	void draw(int mode);
+	void initDraw();
 	inline string  getName(){ return name; }
 	inline cityScene* getCity(){ return city; }
 private:

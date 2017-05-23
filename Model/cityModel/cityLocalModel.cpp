@@ -1,7 +1,10 @@
-#include "cityLocalScene.h"
+#include "cityLocalModel.h"
 #include "TriangleMesh/cannyImage.h"
 #include "TriangleMesh/Mesh.h"
-double cityLocalScene::disP2P(Pot p, Pot q)
+#include "../../util/emxUtilityInc.h"
+#include <gl/freeglut.h>
+
+double cityLocalModel::disP2P(Pot p, Pot q)
 {
 	double res = (p.x - q.x)*(p.x - q.x) + (p.y - q.y)*(p.y - q.y) + (p.z - q.z)*(p.z - q.z);
 	return sqrt(res);
@@ -46,7 +49,7 @@ int countFeaturePoint(int steps, int localRow, int localCol, vector<vector<int> 
 	return totalVer;
 }
 
-Pot cityLocalScene::get_Normal(Pot p1, Pot p2, Pot p3)
+Pot cityLocalModel::get_Normal(Pot p1, Pot p2, Pot p3)
 {
 	double x1 = p2.x - p1.x;
 	double y1 = p2.y - p1.y;
@@ -66,8 +69,175 @@ Pot cityLocalScene::get_Normal(Pot p1, Pot p2, Pot p3)
 
 }
 
+void cityLocalModel::clearVandF()
+{
+	V.clear();
+	F.clear();
+	f_materialId.clear();
+	NF.clear();
+}
 
-void cityLocalScene::loadLocalBuilding(Vector3d  AP_position, double  LocalRange, cityScene* cityAll)
+
+void cityLocalModel::generateBuildingMesh()
+{
+	int concave_polygonNum = 0;
+	for (int buildings_id = 0; buildings_id < local_Buildings.size(); buildings_id++)
+	{
+		int count = local_Buildings[buildings_id].upper_facePoint.size() - 1; //记录building顶面点坐标时，首末点重合，记录两次，所以   .size（）-1
+		double building_height = local_Buildings[buildings_id].height;
+		int V_size = V.size();
+		vector<int> upper_PointIndex; //存储上顶面点的索引值，以备上顶面剖分生成面片时所用
+
+		//点的存储操作
+		//上顶面的点
+		for (int id = 0; id < count; id++)
+		{
+			Vector3d point = local_Buildings[buildings_id].upper_facePoint[id];
+			V.push_back(point);
+			upper_PointIndex.push_back(V.size() - 1);
+		}
+		//下底面的点
+		for (int id = 0; id < count; id++)
+		{
+			Vector3d point = local_Buildings[buildings_id].upper_facePoint[id];
+			double under_height = point.z - building_height;
+			V.push_back(Vector3d(point.x, point.y, under_height));
+		}
+
+		Vector3d E1, E2, N;
+		//面片的操作
+		//建筑物侧面剖分生成面片,分成两个三角形
+		for (int id = 0; id < count; id++)
+		{
+			int i1, i2, i3, i4;
+
+			i1 = id + V_size;
+			i2 = (id + 1) % count + V_size;
+			i3 = (id + 1) % count + count + V_size;
+			i4 = id + count + V_size;
+
+			E1 = V[i2] - V[i1];
+			E2 = V[i3] - V[i2];
+			N = VectorCross(E1, E2);
+
+			if (N.norm() > DOUBLE_EPSILON)
+			{
+				F.push_back(Vector3i(i1, i2, i3));
+				NF.push_back(N.normalize());
+			}
+
+			E1 = V[i3] - V[i1];
+			E2 = V[i4] - V[i3];
+			N = VectorCross(E1, E2);
+
+			if (N.norm() > DOUBLE_EPSILON)
+			{
+				F.push_back(Vector3i(i1, i3, i4));
+				NF.push_back(N.normalize());
+			}
+		}
+
+		//建筑物上顶面剖分生成面片，面片法向量均为正z轴方向即Vector3d(0,0,1),凹多边形三角化特殊处理见网址：http://blog.sina.com.cn/s/blog_5a6f39cf0101374h.html
+		bool convex = true; //为true时是凸多边形，false时是凹多边形
+		vector<Vector3d> upper_face = local_Buildings[buildings_id].upper_facePoint;
+		upper_face.pop_back(); //首末点重复，所以要删掉末尾的重复点
+		int count1 = upper_face.size();
+
+		for (int id = 0; id < count1; id++)
+		{
+			Vector3d v1, v2, v3;
+			v1 = upper_face[id];
+			v2 = upper_face[(id + 1) % count1];
+			v3 = upper_face[(id + 2) % count1];
+			//看v2是不是凹点
+			if (Dot(VectorCross(v2 - v1, v3 - v2), Vector3d(0, 0, -1)) < DOUBLE_EPSILON)//判断是否为凹
+			{
+				//判断若为凹点，直接剔除掉v2
+				std::vector<Vector3d>::iterator it1 = upper_face.begin() + (id + 1) % count1;
+				upper_face.erase(it1);
+				std::vector<int>::iterator it2 = upper_PointIndex.begin() + (id + 1) % count1;
+				upper_PointIndex.erase(it2);
+
+				count1--;
+				id--;
+
+				convex = false;
+			}
+		}
+		if (!convex)
+		{
+			concave_polygonNum++;
+		}
+
+		//凸多边形剖分，选择一个顶点，然后依次寻找下两个顶点组成一个三角形
+		int count2 = upper_face.size();
+		for (int id = 0; id <= count2 - 3; id++)
+		{
+			E1 = V[upper_PointIndex[id + 2]] - V[upper_PointIndex[0]];
+			E2 = V[upper_PointIndex[id + 1]] - V[upper_PointIndex[id + 2]];
+			N = VectorCross(E1, E2);
+			if (N.norm() > DOUBLE_EPSILON)
+			{
+				F.push_back(Vector3i(upper_PointIndex[0], upper_PointIndex[id + 2], upper_PointIndex[id + 1]));
+				NF.push_back(N.normalize());
+			}
+		}
+	}//一栋建筑物处理完毕
+	cout << "info: 局部建筑物数量是" << local_Buildings.size() <<endl;
+	cout << "info: 局部建筑物面片数量是" << F.size() << " 凹建筑物数量是" << concave_polygonNum << endl;
+
+	int V_num = V.size();
+	int F_startNum = F.size();
+	int NF_startNum = NF.size();
+	VERTEX2D_PTR pVtx = ground_pMesh->pVerArr;
+	int numV = ground_pMesh->vertex_num;
+	for (int i = 3; i<numV + 3; i++)//前三个点是bounding triangle
+	{
+		double x, y, z;
+		x = ((VERTEX2D_PTR)(ground_pMesh->pVerArr + i))->x;
+		y = ((VERTEX2D_PTR)(ground_pMesh->pVerArr + i))->y;
+		z = ((VERTEX2D_PTR)(ground_pMesh->pVerArr + i))->z;
+		V.push_back(Vector3d(x, y, z));
+	}
+
+	TRIANGLE_PTR pTri = ground_pMesh->pTriArr;
+	int tri_index = 0;
+	int* pi;
+	while (pTri != NULL)
+	{
+		tri_index++;
+		int id[3];
+		pi = &(pTri->i1);
+		for (int j = 0; j<3; j++)
+		{
+			id[j] = *pi++;
+			id[j] = id[j] - 3 + V_num;
+		}
+		Vector3d E1, E2, N;
+		E1 = V[id[1]] - V[id[0]];
+		E2 = V[id[2]] - V[id[1]];
+		N = VectorCross(E1, E2);
+		if (N.norm() > DOUBLE_EPSILON)
+		{
+			F.push_back(Vector3i(id[0], id[1], id[2]));
+			NF.push_back(N.normalize());
+		}
+		pTri = pTri->pNext;
+	}
+	int F_endNum = F.size();
+	int NF_endNum = NF.size();
+	cout << "info: 地面建模点的数量 " << V.size() - V_num << "  三角形数量 " << F_endNum - F_startNum << " 法向量数量 " << NF_endNum - NF_startNum << endl;
+	// calculate the bounding box
+	std::vector<Vector3d>::const_iterator v = V.begin();
+	for (++v; v != V.end(); ++v)
+	{
+		MinPos = Min(MinPos, (*v));
+		MaxPos = Max(MaxPos, (*v));
+	}
+	cout << "info: 结点生成完毕！" << endl;
+}
+
+void cityLocalModel::loadLocalBuilding(Vector3d  AP_position, double  LocalRange, cityScene* cityAll)
 {
 	//局部区域的范围 MinPos、MaxPos
 	MinPos = AP_position - Vector3d(LocalRange / 2, LocalRange / 2, 0);
@@ -103,7 +273,7 @@ void cityLocalScene::loadLocalBuilding(Vector3d  AP_position, double  LocalRange
 3.三角剖分
 */
 /************************************************************************/
-void cityLocalScene::loadLocalGround(Vector3d center, double range, cityScene* cityAll)
+void cityLocalModel::loadLocalGround(Vector3d center, double range, cityScene* cityAll)
 {
 	
 	//step1 生成局部的cityGround模型数据
@@ -116,7 +286,7 @@ void cityLocalScene::loadLocalGround(Vector3d center, double range, cityScene* c
 	int localCol = local_Ground->getCol();
 
 	//初始化特征点矩阵
-	vector<vector<int> > cannyPoint;//从局部点开始的点 不是全局的 
+	//vector<vector<int> > cannyPoint;//从局部点开始的点 不是全局的 
 	cannyPoint.resize(localRow, vector<int>(localCol));
 
 	//初始化向量矩阵
@@ -147,7 +317,7 @@ void cityLocalScene::loadLocalGround(Vector3d center, double range, cityScene* c
 /************************************************************************/
 /*将点保存在MESH_PTR 结构中  方案3 采用内部插点                        */
 /************************************************************************/
-int cityLocalScene::inputMeshPtr()
+int cityLocalModel::inputMeshPtr()
 {
 	int amount = 3;
 	int localRow = local_Ground->getRow();
@@ -217,7 +387,7 @@ int cityLocalScene::inputMeshPtr()
 返回参数 Pot形式的法向量
 */
 /************************************************************************/
-Pot cityLocalScene::GetNormalPoint(Pot src, vector<Pot> adjPoint)
+Pot cityLocalModel::GetNormalPoint(Pot src, vector<Pot> adjPoint)
 {
 
 	int adjSize = adjPoint.size();
@@ -254,7 +424,7 @@ Pot cityLocalScene::GetNormalPoint(Pot src, vector<Pot> adjPoint)
 added by lg
 */
 /************************************************************************/
-void cityLocalScene::localGetNormalMatrix()
+void cityLocalModel::localGetNormalMatrix()
 {
 	double xminLocal = local_Ground->getXmin();
 	double ymaxLocal = local_Ground->getYmax();
@@ -283,7 +453,7 @@ void cityLocalScene::localGetNormalMatrix()
 出参：vector<Pot> adjPoints
 */
 /************************************************************************/
-void cityLocalScene::getAdjPoint(vector<Pot> &adjPoints,int i,int j)
+void cityLocalModel::getAdjPoint(vector<Pot> &adjPoints,int i,int j)
 {
 	double xmin = local_Ground->getXmin();
 	double ymax = local_Ground->getYmax();
@@ -407,12 +577,36 @@ void cityLocalScene::getAdjPoint(vector<Pot> &adjPoints,int i,int j)
 	
 */
 /************************************************************************/
-cityLocalScene::cityLocalScene(Vector3d  AP_position, double  LocalRange, cityScene* cityAll)
+cityLocalModel::cityLocalModel(Vector3d  AP_position, double  LocalRange, cityScene* cityAll,string _name)
 {
+	name = _name + "_Local_Model";
 	loadLocalBuilding(AP_position, LocalRange, cityAll);
 	loadLocalGround(AP_position, LocalRange, cityAll);
 	cout << "Info: 地面场景构建完成" << endl;
+	clearVandF();
+	generateBuildingMesh();
+
 }
-cityLocalScene::~cityLocalScene()
+cityLocalModel::~cityLocalModel()
 {
+}
+
+void cityLocalModel::initDraw()
+{
+	
+}
+
+void cityLocalModel::draw(int mode)
+{
+	
+}
+
+double cityLocalModel:: getAltitude(double x, double y)
+{
+	if (local_Ground == NULL)
+	{
+		cout << "error : 不存在局部模型" << endl;
+		return -1000;
+	}
+  return local_Ground->getPointAltitude(x, y);
 }
