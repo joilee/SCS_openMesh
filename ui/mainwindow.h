@@ -60,6 +60,10 @@ private slots:
 	void quickLoadJson();
 	void saveSimuPlane();
 	void loadSimuPlane();
+
+private:
+	void load_Material(string path);
+
 	//内部界面控件
 private:
 	Ui::MainWindowClass ui;
@@ -94,13 +98,6 @@ private:
 	 /* plugin 参数                                                                     */
 	 /************************************************************************/
 	 QString plugin_file_path;
-
-	 //
-
-
-
-	 //读建筑物以及高度
-
 
 	 void init();
 	 void createActions();

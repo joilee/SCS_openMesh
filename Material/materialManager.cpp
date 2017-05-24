@@ -2,6 +2,10 @@
 #include <fstream>
 void scsMaterialManager:: addMatertial(string path)
 {
+	if (materialExisted())
+	{
+		deleteMaterial();
+	}
 	ifstream infile((path).c_str(), ios::in | ios::_Nocreate);
 	if (!infile)
 	{

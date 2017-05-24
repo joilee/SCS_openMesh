@@ -151,11 +151,13 @@ void MainWindow::open_material()
 {
 	
 	QString path = QFileDialog::getOpenFileName(this,QStringLiteral("打开材质文件"),"./",QStringLiteral("txt 材质文件 (*.txt)"));
-	globalContext *globalCtx = globalContext::GetInstance();
-	globalCtx->matManager->addMatertial(path.toStdString());
-	
+	load_Material(path.toStdString());
 }
-
+void MainWindow:: load_Material(string path)
+{
+	globalContext *globalCtx = globalContext::GetInstance();
+	globalCtx->matManager->addMatertial(path);
+}
 void MainWindow::setMeshOption()
 {
 	if (mod == NULL)
@@ -349,5 +351,35 @@ void MainWindow::quickLoadJson()
 	globalContext *gctx = globalContext::GetInstance();
 	gctx->modelManager->loadCityModel(path.toStdString());
 
+	//获取json文件所在文件夹的目录,为读材质文件准备好路径
+	QDir jsonPath(path);
+	jsonPath.cdUp();
+	QString fatherDirectory = jsonPath.path();
+	fatherDirectory.append("/");
 
+	QFile file(path);
+	file.open(QIODevice::ReadWrite);
+	QByteArray json = file.readAll();
+	QJsonDocument jsDoc;
+	jsDoc = QJsonDocument::fromJson(json);
+
+	QString _m;
+	if (jsDoc.isObject())
+	{
+		QJsonObject obj = jsDoc.object();
+		//检测材料
+		if (obj.contains("Material"))
+		{
+			QJsonValue name_value = obj["Material"];
+			if (name_value.isString())
+			{
+				_m = fatherDirectory + name_value.toString();
+			}
+		}
+		else
+		{
+			cout << "error: json中没有材质文件，请检查！" << endl;
+		}
+	}
+	load_Material(_m.toStdString());
 }
