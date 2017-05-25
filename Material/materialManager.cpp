@@ -47,7 +47,7 @@ void scsMaterialManager:: addMatertial(string path)
 }
 scsMaterialManager::scsMaterialManager()
 {
-	material_ID = 43;//默认是混凝土文件
+	material_ID = 10;//默认是混凝土文件
 }
 
 scsMaterialManager::~scsMaterialManager()

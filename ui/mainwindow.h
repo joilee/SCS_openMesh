@@ -60,6 +60,9 @@ private slots:
 	void quickLoadJson();
 	void saveSimuPlane();
 	void loadSimuPlane();
+	void setDrawPointMode(bool);
+	void setDrawLineMode(bool);
+	void setDrawFaceMode(bool);
 
 private:
 	void load_Material(string path);

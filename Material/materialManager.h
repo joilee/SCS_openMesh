@@ -39,6 +39,11 @@ public:
 
 	void setDefault(int i);
 	int getDefaultMaterial();
+
+	/*
+	@brief 获得材料向量中，第i个元素的颜色
+	*/
+	inline Color getColor(int i){ return materialdatabase[i].color; }
 private:
 	vector<scsMaterial> materialdatabase;
 	int material_ID;

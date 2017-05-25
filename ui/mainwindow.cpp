@@ -87,27 +87,46 @@ void MainWindow::setProgress(int value)
 	ui.progressBar->setValue(value);
 }
 
-void MainWindow:: createActions()
+void MainWindow::createActions()
 {
-		connect(ui.action_3, SIGNAL(triggered()), this, SLOT(openOutdoorFile()));
-		connect(ui.computerOption,SIGNAL(triggered()),this,SLOT(computerOption()));
-		connect(M_outdoorFileDialog,SIGNAL(fileIsOK(QString,QStringList,QStringList ,QString )),this,SLOT(loadAllFile(QString,QStringList ,QStringList ,QString )));
-		connect(ui.action_ShowAll,SIGNAL(triggered()),this,SLOT(showAll()));
-		connect(ui.action_localscene,SIGNAL(triggered()),this,SLOT(showLocal()));
-		connect(ui.action_obj,SIGNAL(triggered()),this,SLOT(loadObj()));
-		connect(ui.action_9,SIGNAL(triggered()),this,SLOT(setMaterial()));
-		connect(ui.action_matFile,SIGNAL(triggered()),this,SLOT(open_material()));
-		connect(ui.action_SaveSimuPlane,SIGNAL(triggered()),this,SLOT(saveSimuPlane()));
-		connect(ui.action_loadSimuPlane,SIGNAL(triggered()),this,SLOT(loadSimuPlane()));
-		connect(ui.action_6,SIGNAL(triggered()),this,SLOT(setMeshOption()));
-		connect(ui.action_startMesh,SIGNAL(triggered()),this,SLOT(meshAll()));
-		connect(ui.action_saveLocal,SIGNAL(triggered()),this,SLOT(saveLocalScene()));
-		connect(M_computeroptionDialog->es->loadSitesButton,SIGNAL(clicked()),this,SLOT(openTransAntenna_ParamFile()));
-		connect(M_computeroptionDialog->es->loadTransAntennaButton,SIGNAL(clicked()),this,SLOT(openTransAntennas_DirGain()));
-		connect(M_computeroptionDialog->fp->loadReceieverPointFile,SIGNAL(clicked()),this,SLOT(openNo_SimplaneReceiverFile()));
-       	connect(ui.action_loadPlugin,SIGNAL(triggered()),this,SLOT(loadPlugin()));
-		connect(ui.action_run,SIGNAL(triggered()),this,SLOT(run()));
-		connect(ui.action_json,SIGNAL(triggered()),this,SLOT(quickLoadJson()));
+	connect(ui.action_3, SIGNAL(triggered()), this, SLOT(openOutdoorFile()));
+	connect(ui.computerOption, SIGNAL(triggered()), this, SLOT(computerOption()));
+	connect(M_outdoorFileDialog, SIGNAL(fileIsOK(QString, QStringList, QStringList, QString)), this, SLOT(loadAllFile(QString, QStringList, QStringList, QString)));
+	connect(ui.action_ShowAll, SIGNAL(triggered()), this, SLOT(showAll()));
+	connect(ui.action_localscene, SIGNAL(triggered()), this, SLOT(showLocal()));
+	connect(ui.action_obj, SIGNAL(triggered()), this, SLOT(loadObj()));
+	connect(ui.action_9, SIGNAL(triggered()), this, SLOT(setMaterial()));
+	connect(ui.action_matFile, SIGNAL(triggered()), this, SLOT(open_material()));
+	connect(ui.action_SaveSimuPlane, SIGNAL(triggered()), this, SLOT(saveSimuPlane()));
+	connect(ui.action_loadSimuPlane, SIGNAL(triggered()), this, SLOT(loadSimuPlane()));
+	connect(ui.action_6, SIGNAL(triggered()), this, SLOT(setMeshOption()));
+	connect(ui.action_startMesh, SIGNAL(triggered()), this, SLOT(meshAll()));
+	connect(ui.action_saveLocal, SIGNAL(triggered()), this, SLOT(saveLocalScene()));
+	connect(M_computeroptionDialog->es->loadSitesButton, SIGNAL(clicked()), this, SLOT(openTransAntenna_ParamFile()));
+	connect(M_computeroptionDialog->es->loadTransAntennaButton, SIGNAL(clicked()), this, SLOT(openTransAntennas_DirGain()));
+	connect(M_computeroptionDialog->fp->loadReceieverPointFile, SIGNAL(clicked()), this, SLOT(openNo_SimplaneReceiverFile()));
+	connect(ui.action_loadPlugin, SIGNAL(triggered()), this, SLOT(loadPlugin()));
+	connect(ui.action_run, SIGNAL(triggered()), this, SLOT(run()));
+	connect(ui.action_json, SIGNAL(triggered()), this, SLOT(quickLoadJson()));
+	connect(ui.action_showPoint, SIGNAL(triggered(bool)), this, SLOT(setDrawPointMode(bool)));
+	connect(ui.action_showLine, SIGNAL(triggered(bool)), this, SLOT(setDrawLineMode(bool)));
+	connect(ui.action_showFace, SIGNAL(triggered(bool)), this, SLOT(setDrawFaceMode(bool)));
+}
+
+void MainWindow::setDrawPointMode(bool flag)
+{
+	//用二进制表达状态
+	ui.simuArea->drawLocalPoint = flag;
+}
+void MainWindow::setDrawLineMode(bool flag)
+{
+	//用二进制表达状态
+	ui.simuArea->drawLocalLine= flag;
+}
+void MainWindow::setDrawFaceMode(bool flag)
+{
+	//用二进制表达状态
+	ui.simuArea->drawLocalFace = flag;
 }
 
 void MainWindow::saveSimuPlane()
@@ -332,7 +351,7 @@ void MainWindow::run()
 		if (pluginTemp)
 		{
 			outputLog(QStringLiteral("开始运行计算函数"));	
-			pluginTemp->runAlgorithm(gctx->modelPara,gctx->cptManager->getComputationPara(),gctx->visualPara);
+			pluginTemp->runAlgorithm(gctx->modelManager->getModelPara(),gctx->cptManager->getComputationPara(),gctx->visualPara);
 		    outputLog(QStringLiteral("结束计算"));
 			ui.simuPlane->setSimPlane(gctx->visualPara->vis_AP_EFieldArrays,gctx->visualPara->horizonNum,gctx->visualPara->veticalNum);
 			outputLog(QStringLiteral("显示结果"));

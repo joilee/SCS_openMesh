@@ -2,7 +2,11 @@
 #include "TriangleMesh/cannyImage.h"
 #include "TriangleMesh/Mesh.h"
 #include "../../util/emxUtilityInc.h"
+#include "../../Context/context.h"
 #include <gl/freeglut.h>
+#include "../../util/Color.h"
+#include <iostream>
+#include <fstream>
 
 double cityLocalModel::disP2P(Pot p, Pot q)
 {
@@ -219,8 +223,17 @@ void cityLocalModel::generateBuildingMesh()
 		N = VectorCross(E1, E2);
 		if (N.norm() > DOUBLE_EPSILON)
 		{
-			F.push_back(Vector3i(id[0], id[1], id[2]));
-			NF.push_back(N.normalize());
+			//对于地面的点,法向量的z必须大于0
+			if (N.z > 0)
+			{
+				F.push_back(Vector3i(id[0], id[1], id[2]));
+				NF.push_back(N.normalize());
+			}
+			else //换一个点的排列顺序 0 2 1
+			{
+				F.push_back(Vector3i(id[0], id[2], id[1]));
+				NF.push_back(-N.normalize());
+			}
 		}
 		pTri = pTri->pNext;
 	}
@@ -585,7 +598,13 @@ cityLocalModel::cityLocalModel(Vector3d  AP_position, double  LocalRange, citySc
 	cout << "Info: 地面场景构建完成" << endl;
 	clearVandF();
 	generateBuildingMesh();
+	
+	//添加材料信息
+	globalContext *globalCtx = globalContext::GetInstance();
+	int defaultID = globalCtx->matManager->getDefaultMaterial();
+	f_materialId = vector<int>(F.size(),defaultID);
 
+	initDraw();
 }
 cityLocalModel::~cityLocalModel()
 {
@@ -593,12 +612,128 @@ cityLocalModel::~cityLocalModel()
 
 void cityLocalModel::initDraw()
 {
+	//faceColor.resize(F.size(), vector<double>(4));
+	globalContext *globalCtx = globalContext::GetInstance();
+	double last_time, material_time,this_time;
+
+	//统一透明度
+	double alpha = globalCtx->modelManager->getAlpha();
 	
+	//获得每一个面的颜色
+	for (int i = 0; i < F.size(); i++)
+	{
+		int index = globalCtx->matManager->getVectorIndexFromID(f_materialId[i]);
+		Color tmp = globalCtx->matManager->getColor(index);
+
+		vector<double> colorVector;
+		colorVector.push_back((double)tmp.r/256.0);
+		colorVector.push_back((double)tmp.g/256.0);
+		colorVector.push_back((double)tmp.b/256.0);
+		colorVector.push_back(alpha);
+		faceColor.push_back(colorVector);
+	}
+
+	//计时开始
+	last_time = GetTickCount();
+
+	//以下所有都是根据面来设置，比如第一个面编号是1，2，3，第二个面编号是3，4，5
+	color.clear();
+	for (int i = 0; i < faceColor.size();++i)
+	{
+		for (int j = 0; j < 4;++j)
+		{
+			color.push_back(faceColor[i][j]);
+		}
+	}
+
+	material_time = GetTickCount();
+	//构造opengl坐标数组、索引数组、向量数组
+	for (int i = 0; i < F.size();i++)
+	{
+		Vector3i vIndex = F[i];//3个点
+		for (int j = 0; j < 3;j++)
+		{
+			//索引坐标
+			indices.push_back(i*3+j);
+			//点的坐标
+			vertices.push_back(V[vIndex[j]].x);
+			vertices.push_back(V[vIndex[j]].y);
+			vertices.push_back(V[vIndex[j]].z);
+			//向量坐标
+			normals.push_back(NF[i].x);
+			normals.push_back(NF[i].y);
+			normals.push_back(NF[i].z);
+		}
+	}
+	this_time = GetTickCount();
+
+	showWireList = glGenLists(1);
+	// SHOW WIRE  
+	glNewList(showWireList, GL_COMPILE);
+	glDisable(GL_LIGHTING);
+	glLineWidth(2.0f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_LINES);
+	for (int i = 0; i < F.size();i++) {
+		for (int j = 0; j < 3;j++)
+		{
+			glVertex3f((GLfloat)V[F[i][j]].x, (GLfloat)V[F[i][j]].y, (GLfloat)V[F[i][j]].z);
+			glVertex3f((GLfloat)V[F[i][(j + 1) % 3]].x, (GLfloat)V[F[i][(j + 1) % 3]].y, (GLfloat)V[F[i][(j + 1) % 3]].z);
+		}
+	}
+	glEnd();
+	glEnable(GL_LIGHTING);
+	glEndList();
+
+
+
+
+
+
+
+
+	cout << "info:局部场景openGL数据初始化完成，共耗时"<<(this_time-last_time)/1000<<"s" << endl;
+	cout << "info:局部场景中，颜色数组设置耗时" << (material_time - last_time) / 1000 << "s" << endl;
 }
 
-void cityLocalModel::draw(int mode)
+void cityLocalModel:: writeToObj()
 {
-	
+	ofstream fout("D:\\test.obj");
+	for (int i = 0; i < V.size();i++)
+	{
+		fout <<"v " <<V[i].x << " " << V[i].y << " " << V[i].z << endl;
+	}
+	for (int i = 0; i < F.size();i++)
+	{
+		fout<<"f " << F[i].x + 1 << " " << F[i].y + 1 << " "<<F[i].z + 1 << endl;
+	}
+}
+
+void cityLocalModel::draw(vector<bool> mode)
+{
+	if (mode[0])//draw vertice
+	{
+
+	}
+	if (mode[1])//draw line
+	{
+		glCallList(showWireList);
+	}
+	if(mode[2])//draw face
+	{
+
+		// enable and specify pointers to vertex arrays
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glNormalPointer(GL_FLOAT, 0, &normals[0]);
+		glColorPointer(4, GL_FLOAT, 0, &color[0]);
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
+		glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+	}
 }
 
 double cityLocalModel:: getAltitude(double x, double y)

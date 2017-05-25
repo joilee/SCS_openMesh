@@ -33,7 +33,7 @@
        <enum>QTabWidget::South</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="GLWidget" name="ModelView">
        <attribute name="title">
@@ -87,6 +87,8 @@
     <addaction name="action_startMesh"/>
     <addaction name="separator"/>
     <addaction name="action_9"/>
+    <addaction name="separator"/>
+    <addaction name="action_4"/>
    </widget>
    <widget class="QMenu" name="menuComputer">
     <property name="title">
@@ -108,6 +110,11 @@
     <addaction name="separator"/>
     <addaction name="action_SaveSimuPlane"/>
     <addaction name="action_loadSimuPlane"/>
+    <addaction name="separator"/>
+    <addaction name="action_showPoint"/>
+    <addaction name="action_showLine"/>
+    <addaction name="action_showFace"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -127,6 +134,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_showPoint"/>
+   <addaction name="action_showLine"/>
+   <addaction name="action_showFace"/>
+   <addaction name="action_loadPlugin"/>
+   <addaction name="action_run"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_outputLog">
@@ -313,6 +325,10 @@
    </property>
   </action>
   <action name="action_loadPlugin">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/pluginInsert.ico</normaloff>Resources/pluginInsert.ico</iconset>
+   </property>
    <property name="text">
     <string>加载算法</string>
    </property>
@@ -323,6 +339,10 @@
    </property>
   </action>
   <action name="action_run">
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/run.ico</normaloff>Resources/run.ico</iconset>
+   </property>
    <property name="text">
     <string>计算</string>
    </property>
@@ -340,6 +360,47 @@
   <action name="action_loadSimuPlane">
    <property name="text">
     <string>导入仿真面</string>
+   </property>
+  </action>
+  <action name="action_showPoint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/point.ico</normaloff>Resources/point.ico</iconset>
+   </property>
+   <property name="text">
+    <string>显示点</string>
+   </property>
+  </action>
+  <action name="action_showLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/line.ico</normaloff>Resources/line.ico</iconset>
+   </property>
+   <property name="text">
+    <string>显示线</string>
+   </property>
+  </action>
+  <action name="action_showFace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>Resources/face.ico</normaloff>Resources/face.ico</iconset>
+   </property>
+   <property name="text">
+    <string>显示面</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>生成计算参数</string>
    </property>
   </action>
  </widget>

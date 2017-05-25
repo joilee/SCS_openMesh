@@ -18,7 +18,7 @@ class globalContext
 public:	
 
 	//
-	ModelPara * modelPara;
+	
 	//ComputePara* cptPara;
 	visPara *visualPara;
 	

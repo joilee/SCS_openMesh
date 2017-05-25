@@ -1,7 +1,7 @@
 #include "modelPara.h"
 ModelPara::ModelPara()
 {
-
+	localModel = NULL;
 }
 
 ModelPara::~ModelPara()

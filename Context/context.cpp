@@ -3,8 +3,7 @@
 
 globalContext::globalContext()
 {
-	//cptPara=new ComputePara;
-	modelPara=new ModelPara;
+
 	visualPara=new visPara;
 	modelManager = new ModelManager;
 	cptManager = new computeManager;
@@ -14,9 +13,6 @@ globalContext::globalContext()
 globalContext::~globalContext()
 {
 	
-	 if (modelPara!=NULL)
-	 {
-		 delete modelPara;
-	 }
+
 	 delete cptManager;
 }

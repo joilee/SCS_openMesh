@@ -12,19 +12,25 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(QGLFormat(QGL::SampleBuffers), pa
 {
 	resetRenderColor();
 	// Ground
-	m_lightPos = Vector3d(0, 0.55,20);
+	m_lightPos = Vector3d(0, 0.55,200);
 
 	m_groundCenter = Vector3d(0, 0, 0);
 	m_dGroundWidth=5;
 
 	TriangleModel=NULL;
-	vis_factor_face=0.9;
-	drawTriangleScene=false;
+	vis_factor_face=1;
+	
+	minPos = Vector3d(DBL_MAX, DBL_MAX, DBL_MAX);
+	maxPos = Vector3d(DBL_MIN,DBL_MIN,DBL_MIN);
+
 	drawVectorScene=false;
 	drawSimplaneFlag=false;
-	vis_factor_scence =0.8;
+	vis_factor_scence =1;
 	materials.clear();
 	defaultMaterial=-1;
+	drawLocalPoint = false;;
+	drawLocalLine=false;
+	drawLocalFace=false;
 	setMouseTracking(true);
 }
 
@@ -76,39 +82,44 @@ void GLWidget::initializeGL()
 	initializeOpenGLFunctions();
 
 	////定义材料属性
-	//float mat_specular   [] = {0.3f, 0.3f, 0.3f, 0.3f };
-	//float mat_shininess  [] = { 100.0f };
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);  
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);  
+	float mat_specular[] = { 0.3f, 0.3f, 0.3f, 0.3f };
+	float mat_shininess[] = { 100.0f };
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
 	
 	 //创建光源
 	float light0_position[] = { m_lightPos.x, m_lightPos.y, m_lightPos.z, 0 };
-	float light0_diffuse [] = { m_lightColor.r, m_lightColor.g, m_lightColor.b, 1.0};
+	float light0_diffuse[] = { m_lightColor.r, m_lightColor.g, m_lightColor.b, 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light0_position);  //光源位置
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);  //散射光
 	// 指定环境光的RGBA强度值
 	GLfloat ambientLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	// 设置光照模型，将ambientLight所指定的RGBA强度值应用到环境光
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
 	 //定义光照模型
 	glEnable(GL_LIGHTING);
-	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE); 
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE); 
 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
 
 	glClearColor(m_backGroundColor.r , m_backGroundColor.g, m_backGroundColor.b, 0.0);   //设置当前清除颜色
-//	glShadeModel(GL_SMOOTH);  //平滑着色
-//	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);		// 基于源象素alpha通道值的半透明混合函数
+	glShadeModel(GL_SMOOTH);  //平滑着色
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);		// 基于源象素alpha通道值的半透明混合函数
 }
 
 
 void GLWidget::paintGL()
 {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //用设定的当前清除值清除指定的缓冲区
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_DEPTH_TEST);
 		m_camera.setupModelMatrix();
-
-		if (drawTriangleScene)
+		globalContext *globalCtx = globalContext::GetInstance();
+		
+		if (globalCtx->modelManager->drawLocalFlag())
 		{
 			drawLocalScene();
 		}
@@ -236,34 +247,15 @@ void GLWidget::drawAllScene()
 /************************************************************************/
 void GLWidget::drawLocalScene(){
 
-	if (drawTriangleScene) //读取场景obj格式文件并展示
-	{
-	
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		glEnable(GL_DEPTH_TEST);
-
-		glClear(GL_COLOR_BUFFER_BIT);
-		glPolygonMode(GL_FRONT_AND_BACK ,GL_LINE );
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);  
-		glEnableClientState(GL_VERTEX_ARRAY);    
-		glVertexPointer(3, GL_FLOAT, 0, 0);  
-
-		glEnableClientState(GL_COLOR_ARRAY);  
-		glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);  
-		glColorPointer(4, GL_FLOAT, 0, 0);  
-
-		glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, &indices[0]);
-		
-
-		glDisableClientState(GL_VERTEX_ARRAY);  
-		glDisableClientState(GL_COLOR_ARRAY);  
-		glBindBuffer(GL_ARRAY_BUFFER, 0); 
-	}else
-	{
-		QMessageBox::warning(this, QStringLiteral("场景展示"),QStringLiteral("无法展示局部场景或者OBJ模型！"));
-		return;
-	}
+	globalContext *globalCtx = globalContext::GetInstance();
+	minPos = Min(minPos, globalCtx->modelManager->getFirstLocal()->getMin());
+	maxPos = Max(maxPos, globalCtx->modelManager->getFirstLocal()->getMax());
+	updateMesh();
+	vector<bool> mode;
+	mode.push_back(drawLocalPoint);
+	mode.push_back(drawLocalLine);
+	mode.push_back(drawLocalFace);
+	globalCtx->modelManager->getFirstLocal()->draw(mode);
 }
 
 void GLWidget::updateMesh()
@@ -424,7 +416,7 @@ void GLWidget::setTriangleModel(emxModel* TriangleData)
 	  glBindBuffer(GL_ARRAY_BUFFER, colorBufferID);
 	  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*colorVector.size(), &colorVector[0], GL_STATIC_DRAW); 
 	
-	  drawTriangleScene = true;
+	 // drawTriangleScene = true;
 }
 
 void GLWidget::drawPlane()

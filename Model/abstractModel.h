@@ -1,6 +1,7 @@
 #ifndef ABSTRACT_MODEL
 #define ABSTRACT_MODEL
 #include <string>
+#include <vector>
 using namespace std;
 class abstractModel
 {
@@ -9,7 +10,7 @@ public:
 	virtual ~abstractModel();
 
 	virtual string  getName();
-	void virtual draw(int mode);
+	void virtual draw(vector<bool> mode);
 	void virtual initDraw();
 private:
 

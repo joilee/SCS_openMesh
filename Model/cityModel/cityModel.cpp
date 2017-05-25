@@ -127,10 +127,11 @@ void cityModel::LoadModel(string _name, QStringList _v, QStringList _h, string _
 	cout << "Info: " << "模型导入共耗时" << (end_time - start_time)  << "ms" << endl;
 
 }
-void cityModel:: draw(int mode)
+void cityModel:: draw(vector<bool> mode)
 {
 
 }
+
 void cityModel::initDraw()
 {
 

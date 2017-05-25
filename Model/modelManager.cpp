@@ -6,11 +6,16 @@ ModelManager::ModelManager()
 {
 	cityFac = new cityModelFactory;
 	m_subject = new modelSubject;
+	transparency = 1;
+	drawTriangleScene = false;
 }
 
 ModelManager::~ModelManager()
 {
-
+	if (modelPara != NULL)
+	{
+		delete modelPara;
+	}
 }
 
 void ModelManager::insertModel(abstractModel* model)
@@ -49,6 +54,10 @@ void ModelManager::deleteModel(string name)
 	map<string, abstractModel*>::iterator it = modelMap.find(name);
 	if (it!=modelMap.end())
 	{
+		if (typeid(*(it->second)) == typeid(cityLocalModel))
+		{
+			drawTriangleScene = false;
+		}
 		modelMap.erase(it);
 		cout << "success: Model 已经删除" << endl;
 	}
@@ -56,6 +65,7 @@ void ModelManager::deleteModel(string name)
 	{
 		cout << "error: 容器中没有匹配的名字" << endl;
 	}
+
 	cout << "Info: 容器中模型数量为" << modelMap.size() << endl;
 }
 
@@ -64,6 +74,7 @@ void ModelManager::loadCityModel(string path)
 	abstractModel * tmp=cityFac->loadModel(path);
 	cout << "success: 模型已经读入" << endl;
 	insertModel(tmp);
+	
 }
 
 bool ModelManager::generateLocalModel(Vector3d center, double range)
@@ -88,6 +99,9 @@ bool ModelManager::generateLocalModel(Vector3d center, double range)
 	abstractModel * localModel = cityFac->loadModel(center, range, city);
 	cout << "success: 局部模型已经构造！" << endl;
 	insertModel(localModel);
+	drawTriangleScene = true;
+	cityLocalModel *tmp = dynamic_cast<cityLocalModel*>(localModel);
+		tmp->writeToObj();
 	return true;
 }
 void ModelManager::sendNewState()

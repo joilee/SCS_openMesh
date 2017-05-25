@@ -10,6 +10,7 @@
 #include "util/emxCamera.h"
 #include "geometry/emxModel.h"
 #include "geometry/dataStruct.h"
+#include "Context/context.h"
 #include "util/EField.h"
 #include <QPoint>
 #include <QMouseEvent>
@@ -61,7 +62,7 @@ public:
 
 	 vector<building> m_Buildings;  
 
-	bool drawTriangleScene; //局部三角形文件场景绘制
+
 	bool drawVectorScene;  //vector文件场景绘制
 	double vis_factor_scence;//场景的透明度
 
@@ -73,6 +74,12 @@ public:
 	double Tmin;
 	vector<vector<EField>> AP_EPoints;  //记录接收点处相关信息，以便仿真面的绘制
 	 vector<bool> sceneIsDislpay;   //是否显示场景仿真面结果
+
+
+	 //
+	 bool drawLocalPoint;
+	 bool drawLocalLine;
+	 bool drawLocalFace;
 
 public:
 	void updateMesh();
@@ -105,9 +112,7 @@ public:
 
 	void removeTriangleModel()
 	{
-	//	delete TriangleModel;
-	//	TriangleModel=NULL;
-		drawTriangleScene=false;
+		//drawTriangleScene=false;
 		minPos=Vector3d(0,0,0);
 	}
 	void setBuilding(vector<building> &Buildings, Vector3d MaxPoint, Vector3d MinPoint)

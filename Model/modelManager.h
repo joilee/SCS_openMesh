@@ -4,6 +4,7 @@
 #include "abstractModelFactory.h"
 #include  "cityModel/cityModelFactory.h"
 #include  "../observer/modelSubject.h"
+#include "../para/modelPara.h"
 #include <map>
 class ModelManager
 {
@@ -77,10 +78,30 @@ public:
 	*/
 	cityModel * getFirstCity();
 
+	/*
+	@brief 返回不透明度
+	*/
+	inline double getAlpha(){ return transparency; }
+
+	/*
+	@brief 是否要绘制局部场景
+	*/
+	inline bool drawLocalFlag(){ return drawTriangleScene; }
+
+	/*
+	@brief 返回计算所需要的模型参数
+	*/
+	ModelPara* getModelPara(){ return modelPara; }
 private:
 
 	map<string, abstractModel*> modelMap;
 	cityModelFactory *cityFac;
 	modelSubject * m_subject;
+
+	//场景透明度
+	double transparency;
+	bool drawTriangleScene; //局部三角形文件场景绘制flag
+	//
+	ModelPara * modelPara;
 };
 

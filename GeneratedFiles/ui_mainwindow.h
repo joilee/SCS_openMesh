@@ -54,6 +54,10 @@ public:
     QAction *action_json;
     QAction *action_SaveSimuPlane;
     QAction *action_loadSimuPlane;
+    QAction *action_showPoint;
+    QAction *action_showLine;
+    QAction *action_showFace;
+    QAction *action_4;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QTabWidget *tabWidget_Dispaly;
@@ -118,16 +122,42 @@ public:
         action_localscene->setObjectName(QStringLiteral("action_localscene"));
         action_loadPlugin = new QAction(MainWindowClass);
         action_loadPlugin->setObjectName(QStringLiteral("action_loadPlugin"));
+        QIcon icon;
+        icon.addFile(QStringLiteral("Resources/pluginInsert.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_loadPlugin->setIcon(icon);
         action_deletePlugin = new QAction(MainWindowClass);
         action_deletePlugin->setObjectName(QStringLiteral("action_deletePlugin"));
         action_run = new QAction(MainWindowClass);
         action_run->setObjectName(QStringLiteral("action_run"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral("Resources/run.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_run->setIcon(icon1);
         action_json = new QAction(MainWindowClass);
         action_json->setObjectName(QStringLiteral("action_json"));
         action_SaveSimuPlane = new QAction(MainWindowClass);
         action_SaveSimuPlane->setObjectName(QStringLiteral("action_SaveSimuPlane"));
         action_loadSimuPlane = new QAction(MainWindowClass);
         action_loadSimuPlane->setObjectName(QStringLiteral("action_loadSimuPlane"));
+        action_showPoint = new QAction(MainWindowClass);
+        action_showPoint->setObjectName(QStringLiteral("action_showPoint"));
+        action_showPoint->setCheckable(true);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral("Resources/point.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_showPoint->setIcon(icon2);
+        action_showLine = new QAction(MainWindowClass);
+        action_showLine->setObjectName(QStringLiteral("action_showLine"));
+        action_showLine->setCheckable(true);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral("Resources/line.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_showLine->setIcon(icon3);
+        action_showFace = new QAction(MainWindowClass);
+        action_showFace->setObjectName(QStringLiteral("action_showFace"));
+        action_showFace->setCheckable(true);
+        QIcon icon4;
+        icon4.addFile(QStringLiteral("Resources/face.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_showFace->setIcon(icon4);
+        action_4 = new QAction(MainWindowClass);
+        action_4->setObjectName(QStringLiteral("action_4"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -270,6 +300,8 @@ public:
         menuMesh->addAction(action_startMesh);
         menuMesh->addSeparator();
         menuMesh->addAction(action_9);
+        menuMesh->addSeparator();
+        menuMesh->addAction(action_4);
         menuComputer->addAction(computerOption);
         menuComputer->addSeparator();
         menuComputer->addAction(action_loadPlugin);
@@ -281,10 +313,20 @@ public:
         menuVisualize->addSeparator();
         menuVisualize->addAction(action_SaveSimuPlane);
         menuVisualize->addAction(action_loadSimuPlane);
+        menuVisualize->addSeparator();
+        menuVisualize->addAction(action_showPoint);
+        menuVisualize->addAction(action_showLine);
+        menuVisualize->addAction(action_showFace);
+        menuVisualize->addSeparator();
+        mainToolBar->addAction(action_showPoint);
+        mainToolBar->addAction(action_showLine);
+        mainToolBar->addAction(action_showFace);
+        mainToolBar->addAction(action_loadPlugin);
+        mainToolBar->addAction(action_run);
 
         retranslateUi(MainWindowClass);
 
-        tabWidget_Dispaly->setCurrentIndex(1);
+        tabWidget_Dispaly->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -312,6 +354,10 @@ public:
         action_json->setText(QApplication::translate("MainWindowClass", "\345\277\253\351\200\237\345\257\274\345\205\245\345\234\272\346\231\257(.json)", 0));
         action_SaveSimuPlane->setText(QApplication::translate("MainWindowClass", "\344\277\235\345\255\230\344\273\277\347\234\237\351\235\242", 0));
         action_loadSimuPlane->setText(QApplication::translate("MainWindowClass", "\345\257\274\345\205\245\344\273\277\347\234\237\351\235\242", 0));
+        action_showPoint->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\347\202\271", 0));
+        action_showLine->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\347\272\277", 0));
+        action_showFace->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\351\235\242", 0));
+        action_4->setText(QApplication::translate("MainWindowClass", "\347\224\237\346\210\220\350\256\241\347\256\227\345\217\202\346\225\260", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(ModelView), QApplication::translate("MainWindowClass", "\346\250\241\345\236\213\345\234\272\346\231\257", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(simuArea), QApplication::translate("MainWindowClass", "\344\273\277\347\234\237\345\234\272\346\231\257", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(simuPlane), QApplication::translate("MainWindowClass", "\344\273\277\347\234\237\351\235\242", 0));

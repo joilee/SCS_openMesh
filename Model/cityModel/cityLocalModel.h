@@ -4,6 +4,7 @@
 #include "TriangleMesh/meshStruct.h"
 #include "../../util/vector.h"
 #include "TriangleMesh/point.h"
+#include <gl/freeglut.h>
 
 #define meshLength 10
 
@@ -21,19 +22,30 @@ public:
 	int getTriangleNum(){ return F.size() ; }
 	inline Vector3d getMin(){ return MinPos; }
 	inline Vector3d getMax(){ return MaxPos; }
+
+	/*
+	@brief 输出obj文件
+	*/
+	void writeToObj();
+
 private:
 	std::vector<Vector3d> V;					// vertices
 	std::vector<Vector3i> F;					// faces
-	std::vector<Vector3d> NF;					// normals of faces
+	std::vector<Vector3d> NF;					 // normals of faces
 	/*std::vector<Vector3d> Vn;                 // normals of vertices*/
-	std::vector<int>f_materialId;               //the material of face,面片对应的材料编号
-
+	std::vector<int>f_materialId;                //the material of face,面片对应的材料编号
+	std::vector<vector<double> > faceColor;//每个面的颜色
 	void clearVandF();
 
+	vector<GLfloat> color;
+	vector<GLfloat> vertices;
+	vector<GLfloat> normals;
+	vector<GLuint> indices;
 	/* 
 	@brief 从建筑物和地面模型得到三角形
 	*/
 	void generateBuildingMesh();
+
 
 public:
 	/*
@@ -61,13 +73,15 @@ private:
 	vector<vector<int> > cannyPoint;
 	MESH meshCTX;
 	MESH_PTR ground_pMesh;
+	//
+	GLuint showWireList;
 public:
 	/*
 	@brief 继承父类的函数
 	*/
 	string name;
 	inline string  getName(){ return name; }
-	void  draw(int mode);
+	void  draw(vector<bool> mode);
 	void initDraw();
 };
 
