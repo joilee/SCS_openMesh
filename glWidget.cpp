@@ -107,21 +107,30 @@ void GLWidget::initializeGL()
 	glClearColor(m_backGroundColor.r , m_backGroundColor.g, m_backGroundColor.b, 0.0);   //设置当前清除颜色
 	glShadeModel(GL_SMOOTH);  //平滑着色
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);		// 基于源象素alpha通道值的半透明混合函数
+
+	glEnable(GL_CULL_FACE);//剔除背面
+
 }
 
 
 void GLWidget::paintGL()
 {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //用设定的当前清除值清除指定的缓冲区
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		glEnable(GL_DEPTH_TEST);
+
 		m_camera.setupModelMatrix();
 		globalContext *globalCtx = globalContext::GetInstance();
 		
 		if (globalCtx->modelManager->drawLocalFlag())
 		{
+			glEnable(GL_BLEND);
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+			glEnable(GL_DEPTH_TEST);
 			drawLocalScene();
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_LIGHT0);
+			glDisable(GL_BLEND);
 		}
 		if (drawVectorScene)
 		{
@@ -133,6 +142,12 @@ void GLWidget::paintGL()
 		}
 
 		drawCoordinates();
+		if (globalCtx->modelManager->drawLocalFlag())
+		{
+			//glutSwapBuffers();
+			glFlush();
+		}
+		
 }
 
 void GLWidget::resizeGL(int width, int height)

@@ -4,6 +4,7 @@
 #include "TriangleMesh/meshStruct.h"
 #include "../../util/vector.h"
 #include "TriangleMesh/point.h"
+#include "../../util/Color.h"
 #include <gl/freeglut.h>
 
 #define meshLength 10
@@ -34,10 +35,11 @@ private:
 	std::vector<Vector3d> NF;					 // normals of faces
 	/*std::vector<Vector3d> Vn;                 // normals of vertices*/
 	std::vector<int>f_materialId;                //the material of face,面片对应的材料编号
-	std::vector<vector<double> > faceColor;//每个面的颜色
+	std::vector<vector<GLfloat> > faceColor;//每个面的颜色
 	void clearVandF();
 
-	vector<GLfloat> color;
+	Color uniformColor;//统一颜色
+	double uniform_alpha;
 	vector<GLfloat> vertices;
 	vector<GLfloat> normals;
 	vector<GLuint> indices;

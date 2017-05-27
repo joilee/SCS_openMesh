@@ -604,6 +604,7 @@ cityLocalModel::cityLocalModel(Vector3d  AP_position, double  LocalRange, citySc
 	int defaultID = globalCtx->matManager->getDefaultMaterial();
 	f_materialId = vector<int>(F.size(),defaultID);
 
+	uniformColor = Color(0.0f, 0.0f, 0.0f);
 	initDraw();
 }
 cityLocalModel::~cityLocalModel()
@@ -616,20 +617,25 @@ void cityLocalModel::initDraw()
 	globalContext *globalCtx = globalContext::GetInstance();
 	double last_time, material_time,this_time;
 
-	//统一透明度
-	double alpha = globalCtx->modelManager->getAlpha();
-	
+	//统一透明度和统一的颜色
+	uniform_alpha = globalCtx->modelManager->getAlpha();
+	int defaultID = globalCtx->matManager->getDefaultMaterial();
+	int index = globalCtx->matManager->getVectorIndexFromID(defaultID);
+	uniformColor = globalCtx->matManager->getColor(index);
+
+
+
 	//获得每一个面的颜色
 	for (int i = 0; i < F.size(); i++)
 	{
 		int index = globalCtx->matManager->getVectorIndexFromID(f_materialId[i]);
 		Color tmp = globalCtx->matManager->getColor(index);
 
-		vector<double> colorVector;
+		vector<float> colorVector;
 		colorVector.push_back((double)tmp.r/256.0);
 		colorVector.push_back((double)tmp.g/256.0);
 		colorVector.push_back((double)tmp.b/256.0);
-		colorVector.push_back(alpha);
+		colorVector.push_back(uniform_alpha);
 		faceColor.push_back(colorVector);
 	}
 
@@ -637,16 +643,7 @@ void cityLocalModel::initDraw()
 	last_time = GetTickCount();
 
 	//以下所有都是根据面来设置，比如第一个面编号是1，2，3，第二个面编号是3，4，5
-	color.clear();
-	for (int i = 0; i < faceColor.size();++i)
-	{
-		for (int j = 0; j < 4;++j)
-		{
-			color.push_back(faceColor[i][j]);
-		}
-	}
 
-	material_time = GetTickCount();
 	//构造opengl坐标数组、索引数组、向量数组
 	for (int i = 0; i < F.size();i++)
 	{
@@ -672,41 +669,51 @@ void cityLocalModel::initDraw()
 	glNewList(showWireList, GL_COMPILE);
 	glDisable(GL_LIGHTING);
 	glLineWidth(2.0f);
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glColor4f(0.0f, 0.0f, 0.0f,1.0f);
 	glBegin(GL_LINES);
 	for (int i = 0; i < F.size();i++) {
 		for (int j = 0; j < 3;j++)
 		{
-			glVertex3f((GLfloat)V[F[i][j]].x, (GLfloat)V[F[i][j]].y, (GLfloat)V[F[i][j]].z);
-			glVertex3f((GLfloat)V[F[i][(j + 1) % 3]].x, (GLfloat)V[F[i][(j + 1) % 3]].y, (GLfloat)V[F[i][(j + 1) % 3]].z);
+			glVertex3d((GLdouble)V[F[i][j]].x, (GLdouble)V[F[i][j]].y, (GLdouble)V[F[i][j]].z);
+			glVertex3d((GLdouble)V[F[i][(j + 1) % 3]].x, (GLdouble)V[F[i][(j + 1) % 3]].y, (GLdouble)V[F[i][(j + 1) % 3]].z);
 		}
 	}
 	glEnd();
 	glEnable(GL_LIGHTING);
 	glEndList();
-
-
-
-
-
-
-
-
 	cout << "info:局部场景openGL数据初始化完成，共耗时"<<(this_time-last_time)/1000<<"s" << endl;
-	cout << "info:局部场景中，颜色数组设置耗时" << (material_time - last_time) / 1000 << "s" << endl;
 }
 
 void cityLocalModel:: writeToObj()
 {
 	ofstream fout("D:\\test.obj");
-	for (int i = 0; i < V.size();i++)
-	{
-		fout <<"v " <<V[i].x << " " << V[i].y << " " << V[i].z << endl;
-	}
 	for (int i = 0; i < F.size();i++)
 	{
-		fout<<"f " << F[i].x + 1 << " " << F[i].y + 1 << " "<<F[i].z + 1 << endl;
+		Vector3i vIndex = F[i];//3个点
+		for (int j = 0; j < 3; j++)
+		{
+			//点的坐标
+			fout << "v " << V[vIndex[j]].x << " " << V[vIndex[j]].y << " " << V[vIndex[j]].z << endl;
+		}
 	}
+	for (int i = 0; i < F.size(); i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			fout << "vn " << NF[i].x << " " << NF[i].y << " " << NF[i].z << endl;
+		}
+	}
+
+	for (int i = 0; i < F.size(); i++)
+	{
+		fout << "f ";
+		for (int j = 0; j < 3; j++)
+		{
+			fout << i * 3 + j+1 << "/" << i * 3 + j+1<<" ";
+		}
+		fout << endl;
+	}
+	fout.close();
 }
 
 void cityLocalModel::draw(vector<bool> mode)
@@ -717,17 +724,28 @@ void cityLocalModel::draw(vector<bool> mode)
 	}
 	if (mode[1])//draw line
 	{
-		glCallList(showWireList);
+		//glCallList(showWireList);
+		glDisable(GL_LIGHTING);
+		glLineWidth(2.0f);
+		glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+		glBegin(GL_LINES);
+		for (int i = 0; i < F.size(); i++) {
+			for (int j = 0; j < 3; j++)
+			{
+				glVertex3d((GLdouble)V[F[i][j]].x, (GLdouble)V[F[i][j]].y, (GLdouble)V[F[i][j]].z);
+				glVertex3d((GLdouble)V[F[i][(j + 1) % 3]].x, (GLdouble)V[F[i][(j + 1) % 3]].y, (GLdouble)V[F[i][(j + 1) % 3]].z);
+			}
+		}
+		glEnd();
+		glEnable(GL_LIGHTING);
 	}
 	if(mode[2])//draw face
 	{
-
 		// enable and specify pointers to vertex arrays
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);;
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glColor4f(uniformColor.r/256.0,uniformColor.g/256.0, uniformColor.b/256.0, uniform_alpha);
 		glNormalPointer(GL_FLOAT, 0, &normals[0]);
-		glColorPointer(4, GL_FLOAT, 0, &color[0]);
 		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, &indices[0]);
 		glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
