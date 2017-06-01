@@ -586,7 +586,7 @@ cityLocalModel::cityLocalModel(Vector3d  AP_position, double  LocalRange, citySc
 	
 	//添加材料信息
 	globalContext *globalCtx = globalContext::GetInstance();
-	int defaultID = globalCtx->matManager->getDefaultMaterial();
+	int defaultID = globalCtx->modelManager->matManager->getDefaultMaterial();
 	f_materialId = vector<int>(F.size(),defaultID);
 
 	uniformColor = Color(0.0f, 0.0f, 0.0f);
@@ -604,17 +604,17 @@ void cityLocalModel::initDraw()
 
 	//统一透明度和统一的颜色
 	uniform_alpha = globalCtx->modelManager->getAlpha();
-	int defaultID = globalCtx->matManager->getDefaultMaterial();
-	int index = globalCtx->matManager->getVectorIndexFromID(defaultID);
-	uniformColor = globalCtx->matManager->getColor(index);
+	int defaultID = globalCtx->modelManager->matManager->getDefaultMaterial();
+	int index = globalCtx->modelManager->matManager->getVectorIndexFromID(defaultID);
+	uniformColor = globalCtx->modelManager->matManager->getColor(index);
 
 
 
 	//获得每一个面的颜色
 	for (int i = 0; i < F.size(); i++)
 	{
-		int index = globalCtx->matManager->getVectorIndexFromID(f_materialId[i]);
-		Color tmp = globalCtx->matManager->getColor(index);
+		int index = globalCtx->modelManager->matManager->getVectorIndexFromID(f_materialId[i]);
+		Color tmp = globalCtx->modelManager->matManager->getColor(index);
 
 		vector<float> colorVector;
 		colorVector.push_back((double)tmp.r/256.0);

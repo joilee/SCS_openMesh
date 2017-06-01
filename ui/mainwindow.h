@@ -63,6 +63,7 @@ private slots:
 	void setDrawPointMode(bool);
 	void setDrawLineMode(bool);
 	void setDrawFaceMode(bool);
+	void generateModelPara();
 
 private:
 	void load_Material(string path);

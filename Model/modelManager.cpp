@@ -4,6 +4,7 @@
 #include <iostream>
 ModelManager::ModelManager()
 {
+	matManager = new scsMaterialManager;
 	cityFac = new cityModelFactory;
 	m_subject = new modelSubject;
 	transparency = 1;
@@ -204,4 +205,17 @@ cityModel  *ModelManager:: getFirstCity()
 		it++;
 	}
 	return NULL;
+}
+
+void ModelManager:: setModelPara()
+{
+	cityLocalModel *tmp = getFirstLocal();
+	modelPara->setCityScene(tmp->getScene());
+	modelPara->setMaterialVector(matManager->getMaterialVector());
+	modelPara->setGround_Mesh(tmp->getMesh());
+	modelPara->setVertices(tmp->getVertices());
+	modelPara->setFaces(tmp->getFaces());
+	modelPara->setNormals(tmp->getNF());
+	modelPara->setEachFaceMaterial(tmp->getF_material());
+	modelPara->setApEdgeList(tmp->getScene()->getAPEdge());
 }

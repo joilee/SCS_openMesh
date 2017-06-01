@@ -9,7 +9,7 @@
 
 #include "../Model/modelManager.h"
 #include "../Computation/computeManager.h"
-#include "../Material/materialManager.h"
+
 /************************************************************************/
 /* 单例模式                                                                     */
 /************************************************************************/
@@ -24,7 +24,7 @@ public:
 	
 	ModelManager * modelManager;
 	computeManager * cptManager;
-	scsMaterialManager * matManager;
+	
 	~globalContext();
 	static globalContext*GetInstance()
 	{

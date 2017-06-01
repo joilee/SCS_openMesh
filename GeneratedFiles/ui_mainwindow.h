@@ -57,7 +57,7 @@ public:
     QAction *action_showPoint;
     QAction *action_showLine;
     QAction *action_showFace;
-    QAction *action_4;
+    QAction *action_GenerateModelPara;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QTabWidget *tabWidget_Dispaly;
@@ -156,8 +156,8 @@ public:
         QIcon icon4;
         icon4.addFile(QStringLiteral("Resources/face.ico"), QSize(), QIcon::Normal, QIcon::Off);
         action_showFace->setIcon(icon4);
-        action_4 = new QAction(MainWindowClass);
-        action_4->setObjectName(QStringLiteral("action_4"));
+        action_GenerateModelPara = new QAction(MainWindowClass);
+        action_GenerateModelPara->setObjectName(QStringLiteral("action_GenerateModelPara"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -301,7 +301,7 @@ public:
         menuMesh->addSeparator();
         menuMesh->addAction(action_9);
         menuMesh->addSeparator();
-        menuMesh->addAction(action_4);
+        menuMesh->addAction(action_GenerateModelPara);
         menuComputer->addAction(computerOption);
         menuComputer->addSeparator();
         menuComputer->addAction(action_loadPlugin);
@@ -357,7 +357,7 @@ public:
         action_showPoint->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\347\202\271", 0));
         action_showLine->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\347\272\277", 0));
         action_showFace->setText(QApplication::translate("MainWindowClass", "\346\230\276\347\244\272\351\235\242", 0));
-        action_4->setText(QApplication::translate("MainWindowClass", "\347\224\237\346\210\220\350\256\241\347\256\227\345\217\202\346\225\260", 0));
+        action_GenerateModelPara->setText(QApplication::translate("MainWindowClass", "\347\224\237\346\210\220\350\256\241\347\256\227\345\217\202\346\225\260", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(ModelView), QApplication::translate("MainWindowClass", "\346\250\241\345\236\213\345\234\272\346\231\257", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(simuArea), QApplication::translate("MainWindowClass", "\344\273\277\347\234\237\345\234\272\346\231\257", 0));
         tabWidget_Dispaly->setTabText(tabWidget_Dispaly->indexOf(simuPlane), QApplication::translate("MainWindowClass", "\344\273\277\347\234\237\351\235\242", 0));

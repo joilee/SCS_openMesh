@@ -88,7 +88,7 @@
     <addaction name="separator"/>
     <addaction name="action_9"/>
     <addaction name="separator"/>
-    <addaction name="action_4"/>
+    <addaction name="action_GenerateModelPara"/>
    </widget>
    <widget class="QMenu" name="menuComputer">
     <property name="title">
@@ -398,7 +398,7 @@
     <string>显示面</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="action_GenerateModelPara">
    <property name="text">
     <string>生成计算参数</string>
    </property>

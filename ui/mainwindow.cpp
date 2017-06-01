@@ -111,6 +111,19 @@ void MainWindow::createActions()
 	connect(ui.action_showPoint, SIGNAL(triggered(bool)), this, SLOT(setDrawPointMode(bool)));
 	connect(ui.action_showLine, SIGNAL(triggered(bool)), this, SLOT(setDrawLineMode(bool)));
 	connect(ui.action_showFace, SIGNAL(triggered(bool)), this, SLOT(setDrawFaceMode(bool)));
+	connect(ui.action_GenerateModelPara, SIGNAL(triggered()), this, SLOT(generateModelPara()));
+}
+
+void MainWindow::generateModelPara()
+{
+	globalContext *globalCtx = globalContext::GetInstance();
+	if (!globalCtx->modelManager->checkLocalExist())
+	{
+		outputLog(QStringLiteral("error: 没有局部场景，生成模型参数失败！"));
+		return;
+	}
+	globalCtx->modelManager->setModelPara();
+	outputLog(QStringLiteral("success: 生成模型参数成功！"));
 }
 
 void MainWindow::setDrawPointMode(bool flag)
@@ -175,7 +188,7 @@ void MainWindow::open_material()
 void MainWindow:: load_Material(string path)
 {
 	globalContext *globalCtx = globalContext::GetInstance();
-	globalCtx->matManager->addMatertial(path);
+	globalCtx->modelManager->matManager->addMatertial(path);
 }
 void MainWindow::setMeshOption()
 {
@@ -194,7 +207,7 @@ void MainWindow::setMaterial()
 	if (ok)
 	{
 		globalContext *globalCtx = globalContext::GetInstance();
-		globalCtx->matManager->setDefault(i);
+		globalCtx->modelManager->matManager->setDefault(i);
 	}
 		
 	outputLog(QString(QStringLiteral("设置材质编号为：")+QString::number(i,10)));

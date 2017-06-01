@@ -23,6 +23,10 @@ public:
 	int getTriangleNum(){ return F.size() ; }
 	inline Vector3d getMin(){ return MinPos; }
 	inline Vector3d getMax(){ return MaxPos; }
+	inline vector<Vector3d>& getVertices(){ return V; }
+	inline std::vector<Vector3i>& getFaces(){ return F; }
+	inline std::vector<Vector3d>&getNF(){ return NF; }
+	inline vector<int> &getF_material(){ return f_materialId; }
 
 	/*
 	@brief 输出obj文件
@@ -54,7 +58,9 @@ public:
 	@brief  局部场景成员函数 获得所在位置的海拔
 	*/
 	double getAltitude(double x, double y);
+	cityScene *getScene(){ return scene; }
 
+	MESH_PTR getMesh(){ return ground_pMesh; }
 private:
 	/*
 	@brief 从局部场景产生地面
@@ -72,7 +78,6 @@ private:
 	//vector<Building> local_Buildings;
 	Vector3d MaxPos, MinPos;
 	cityScene *scene;
-	//cityGround* local_Ground;
 
 	vector<vector<double> >normalMatrix;
 	vector<vector<int> > cannyPoint;

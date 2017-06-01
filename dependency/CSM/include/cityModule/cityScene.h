@@ -35,7 +35,7 @@ class cityScene
 		Building getBuildingByValue(int id){ return total_Buildings[id]; }
 		inline Vector3d getMaxPoint(){ return MaxPoint; }
 		inline Vector3d getMinPoint(){ return MinPoint; }
-
+		inline vector<Vedge>& getAPEdge(){ return AP_Edge_list; }
 	private:
 		void readBuilding(const char*filename_2D, const char*filename_Height);
 		void readGround(string p);
@@ -47,4 +47,8 @@ class cityScene
 	
 		//地面模型数组
 		cityGroundVector * ground;
+
+		vector<Vedge> AP_Edge_list;
+		//找出局部场景中所有的棱边，以便于考虑绕射时所需，实际上仅考虑建筑物棱边
+		void GenerateEdge();
 };

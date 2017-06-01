@@ -5,6 +5,7 @@
 #include  "cityModel/cityModelFactory.h"
 #include  "../observer/modelSubject.h"
 #include "../para/modelPara.h"
+#include "../Material/materialManager.h"
 #include <map>
 class ModelManager
 {
@@ -92,6 +93,11 @@ public:
 	@brief 返回计算所需要的模型参数
 	*/
 	ModelPara* getModelPara(){ return modelPara; }
+
+	/*
+	@brief 设置计算参数
+	*/
+	void setModelPara();
 private:
 
 	map<string, abstractModel*> modelMap;
@@ -101,7 +107,10 @@ private:
 	//场景透明度
 	double transparency;
 	bool drawTriangleScene; //局部三角形文件场景绘制flag
+
 	//
 	ModelPara * modelPara;
-};
 
+public:
+	scsMaterialManager * matManager;
+};
