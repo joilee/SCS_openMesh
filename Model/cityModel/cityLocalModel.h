@@ -1,10 +1,10 @@
 #pragma  once
 #include "../abstractModel.h"
-#include "cityScene.h"
-#include "TriangleMesh/meshStruct.h"
-#include "../../util/vector.h"
-#include "TriangleMesh/point.h"
-#include "../../util/Color.h"
+#include <cityModule/cityScene.h>
+#include <mesh/meshStruct.h>
+#include <util/vector.h>
+#include <mesh/point.h>
+#include <util/Color.h>
 #include <gl/freeglut.h>
 
 #define meshLength 10
@@ -56,8 +56,11 @@ public:
 	double getAltitude(double x, double y);
 
 private:
-	void loadLocalBuilding(Vector3d center, double range, cityScene* cityAll);
-	void loadLocalGround(Vector3d center, double range, cityScene* cityAll);
+	/*
+	@brief 从局部场景产生地面
+	*/
+	void loadLocalGround(Vector3d center, double range, cityScene* cityLocal);
+
 	void localGetNormalMatrix();
 	void getAdjPoint(vector<Pot> &adjPoints, int i, int j);
 	Pot GetNormalPoint(Pot src, vector<Pot> adjPoint);
@@ -66,10 +69,10 @@ private:
 	int inputMeshPtr();
 
 	//地面模型数组
-	vector<Building> local_Buildings;
+	//vector<Building> local_Buildings;
 	Vector3d MaxPos, MinPos;
-
-	cityGround* local_Ground;
+	cityScene *scene;
+	//cityGround* local_Ground;
 
 	vector<vector<double> >normalMatrix;
 	vector<vector<int> > cannyPoint;

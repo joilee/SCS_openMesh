@@ -1,10 +1,10 @@
 #include "cityLocalModel.h"
-#include "TriangleMesh/cannyImage.h"
-#include "TriangleMesh/Mesh.h"
-#include "../../util/emxUtilityInc.h"
+#include <canny/cannyImage.h>
+#include <mesh/Mesh.h>
+#include <util/emxUtilityInc.h>
 #include "../../Context/context.h"
 #include <gl/freeglut.h>
-#include "../../util/Color.h"
+#include <util/Color.h>
 #include <iostream>
 #include <fstream>
 
@@ -84,6 +84,7 @@ void cityLocalModel::clearVandF()
 
 void cityLocalModel::generateBuildingMesh()
 {
+	vector<Building>  local_Buildings = scene->getTotal_Building();
 	int concave_polygonNum = 0;
 	for (int buildings_id = 0; buildings_id < local_Buildings.size(); buildings_id++)
 	{
@@ -250,34 +251,6 @@ void cityLocalModel::generateBuildingMesh()
 	cout << "info: 结点生成完毕！" << endl;
 }
 
-void cityLocalModel::loadLocalBuilding(Vector3d  AP_position, double  LocalRange, cityScene* cityAll)
-{
-	//局部区域的范围 MinPos、MaxPos
-	MinPos = AP_position - Vector3d(LocalRange / 2, LocalRange / 2, 0);
-	MaxPos = AP_position + Vector3d(LocalRange / 2, LocalRange / 2, 0);
-	int buildingSize = cityAll->getBuildingSize();
-	for (int buildings_id = 0; buildings_id < buildingSize; buildings_id++)
-	{
-		bool in_range = true;
-		Building tmpBuilding = cityAll->getBuildingByReference(buildings_id);
-		for (int id = 0; id < tmpBuilding.upper_facePoint.size() - 1; id++) //记录building顶面点坐标时，首末点重合，记录两次，所以   .size（）-1
-		{
-			double x1 = tmpBuilding.upper_facePoint[id].x - MinPos.x;
-			double x2 = tmpBuilding.upper_facePoint[id].x - MaxPos.x;
-			double y1 = tmpBuilding.upper_facePoint[id].y - MinPos.y;
-			double y2 = tmpBuilding.upper_facePoint[id].y - MaxPos.y;
-			if (!(x1*x2 < 0 && y1*y2 < 0)) //判断建筑物是否在设定范围内,即使有一个点不在范围内，也判定为不在内部
-			{
-				in_range = false;
-				break;
-			}
-		}
-		if (in_range)
-		{
-			local_Buildings.push_back(cityAll->getBuildingByValue(buildings_id));
-		}
-	}
-}
 
 /************************************************************************/
 /* 寻找规定范围内的地面数据
@@ -286,11 +259,16 @@ void cityLocalModel::loadLocalBuilding(Vector3d  AP_position, double  LocalRange
 3.三角剖分
 */
 /************************************************************************/
-void cityLocalModel::loadLocalGround(Vector3d center, double range, cityScene* cityAll)
+void cityLocalModel::loadLocalGround(Vector3d center, double range, cityScene* scene)
 {
 	
 	//step1 生成局部的cityGround模型数据
-	local_Ground = new cityGround(*((cityAll->getGround()->getGroundVector())[0]), center, range);
+	vector<cityGround*> tmpVector = scene->getGround()->getGroundVector();
+	if (tmpVector.empty())
+	{
+		cout << "error: 城市地面没有数据，请检查" << endl;
+	}
+	cityGround* local_Ground = tmpVector[0];
 
 	//step2 进行局部的文件提取 canny算法 剖分 
 
@@ -332,6 +310,8 @@ void cityLocalModel::loadLocalGround(Vector3d center, double range, cityScene* c
 /************************************************************************/
 int cityLocalModel::inputMeshPtr()
 {
+
+	cityGround* local_Ground = (scene->getGround()->getGroundVector())[0];
 	int amount = 3;
 	int localRow = local_Ground->getRow();
 	int localCol = local_Ground->getCol();
@@ -439,6 +419,7 @@ added by lg
 /************************************************************************/
 void cityLocalModel::localGetNormalMatrix()
 {
+	cityGround* local_Ground = (scene->getGround()->getGroundVector())[0];
 	double xminLocal = local_Ground->getXmin();
 	double ymaxLocal = local_Ground->getYmax();
 	double stdlen = local_Ground->getPrecesion();
@@ -468,6 +449,7 @@ void cityLocalModel::localGetNormalMatrix()
 /************************************************************************/
 void cityLocalModel::getAdjPoint(vector<Pot> &adjPoints,int i,int j)
 {
+	cityGround* local_Ground = (scene->getGround()->getGroundVector())[0];
 	double xmin = local_Ground->getXmin();
 	double ymax = local_Ground->getYmax();
 	double stdlen = local_Ground->getPrecesion();
@@ -592,10 +574,13 @@ void cityLocalModel::getAdjPoint(vector<Pot> &adjPoints,int i,int j)
 /************************************************************************/
 cityLocalModel::cityLocalModel(Vector3d  AP_position, double  LocalRange, cityScene* cityAll,string _name)
 {
+	MaxPos = Vector3d(DBL_MIN, DBL_MIN, DBL_MIN);
+	MinPos = Vector3d(DBL_MAX, DBL_MAX, DBL_MAX);
 	name = _name + "_Local_Model";
-	loadLocalBuilding(AP_position, LocalRange, cityAll);
-	loadLocalGround(AP_position, LocalRange, cityAll);
+	scene = new cityScene(AP_position,LocalRange,cityAll);
+	loadLocalGround(AP_position, LocalRange, scene);
 	cout << "Info: 地面场景构建完成" << endl;
+
 	clearVandF();
 	generateBuildingMesh();
 	
@@ -756,6 +741,8 @@ void cityLocalModel::draw(vector<bool> mode)
 
 double cityLocalModel:: getAltitude(double x, double y)
 {
+	//step1 生成局部的cityGround模型数据
+	cityGround* local_Ground = (scene->getGround()->getGroundVector())[0];
 	if (local_Ground == NULL)
 	{
 		cout << "error : 不存在局部模型" << endl;

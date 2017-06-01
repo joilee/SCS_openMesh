@@ -5,7 +5,7 @@
 #include "Antenna/receiver.h"
 #include "io/io_simuPlane.h"
 #include <QObject>
-#include "../util/stringUtil.h"
+#include <util/stringUtil.h>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)

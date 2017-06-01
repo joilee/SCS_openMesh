@@ -1,7 +1,7 @@
 #ifndef EMXCAMERA_H
 #define EMXCAMERA_H
 
-#include "util/emxRenderUtility.h"
+#include  "emxRenderUtility.h"
 
 class GLWidget;
 	class emxCamera

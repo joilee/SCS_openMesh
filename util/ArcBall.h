@@ -11,7 +11,7 @@
 
 //#include "util/apibase.h"
 #include "Quaternion.h"
-#include "Color.h"
+#include <util/Color.h>
 
 //namespace emxUtility {
 

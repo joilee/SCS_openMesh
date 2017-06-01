@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../../util/vector.h"
+#include "../util/vector.h"
 using namespace std;
 class cityGround
 {
@@ -22,6 +22,7 @@ public:
 	double getYmin() const {  return this->ymin; }
 	double getYmax() const { return this->ymax; }
 	
+
 	int getRow(){ return this->row; }
 	int getCol() { return this->col; }
 	double getPrecesion() const { return this->base; }

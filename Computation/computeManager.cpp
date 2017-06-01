@@ -2,7 +2,7 @@
 #include "../Context/context.h"
 #include <fstream>
 #include <QMessageBox>
-#include "../util/stringUtil.h"
+#include <util/stringUtil.h>
 computeManager::computeManager()
 {
 	cptPara = new ComputePara;

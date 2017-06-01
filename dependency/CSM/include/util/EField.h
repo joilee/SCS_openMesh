@@ -1,6 +1,6 @@
 ﻿#ifndef EFIELD_H
 #define EFIELD_H
-#include "util/vector.h"
+#include "vector.h"
 #include <complex>
 #include <vector>
 

@@ -91,9 +91,16 @@ cityModel::cityModel(string jsonFile)
 		}
 
 	}
+	vector<string> vv;
+	vector<string> hh;
+	for (int m = 0; m < _v.size();m++)
+	{
+		vv.push_back(_v.at(m).toStdString());
+		hh.push_back(_h.at(m).toStdString());
+	}
 	if (flag1&&flag2&&flag3&&flag4&&flag5)
 	{
-		LoadModel(_name.toStdString(), _v, _h,_p.toStdString());
+		LoadModel(_name.toStdString(), vv, hh,_p.toStdString());
 	}
 }
 
@@ -102,15 +109,15 @@ cityModel::~cityModel()
 
 }
 
-void cityModel::LoadModel(string _name, QStringList _v, QStringList _h, string _p)
+void cityModel::LoadModel(string _name, vector<string> _v, vector<string> _h, string _p)
 {
 	name = _name;
-	if (_v.isEmpty()) 
+	if (_v.empty()) 
 	{
 		QMessageBox::warning(NULL, QStringLiteral("文件导入"), QStringLiteral("请先导入建筑物二维信息文件"));
 		return;
 	}
-	if (_h.isEmpty())
+	if (_h.empty())
 	{
 		QMessageBox::warning(NULL, QStringLiteral("文件导入"), QStringLiteral("请先导入建筑物高度信息文件"));
 		return;

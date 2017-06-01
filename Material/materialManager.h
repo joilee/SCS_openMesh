@@ -1,4 +1,4 @@
-﻿#include "scsMaterial.h"
+﻿#include <material/scsMaterial.h>
 
 class scsMaterialManager
 {

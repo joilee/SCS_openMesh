@@ -101,7 +101,7 @@ bool ModelManager::generateLocalModel(Vector3d center, double range)
 	insertModel(localModel);
 	drawTriangleScene = true;
 	cityLocalModel *tmp = dynamic_cast<cityLocalModel*>(localModel);
-		tmp->writeToObj();
+	tmp->writeToObj();
 	return true;
 }
 void ModelManager::sendNewState()

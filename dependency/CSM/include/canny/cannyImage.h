@@ -32,7 +32,7 @@ public:
 	~cannyImage()
 	{
 		// free memory                                                                        
-		for (int i = 0; i < ROWS; i++)
+		for (unsigned int i = 0; i < ROWS; i++)
 		{
 			delete[] imageArray[i];
 			delete[] thetas[i];

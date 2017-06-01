@@ -137,9 +137,6 @@
     <ClCompile Include="util\ArcBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="util\emxCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,25 +149,7 @@
     <ClCompile Include="Model\cityModel\cityModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model\cityModel\cityGround.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\cityModel\cityGroundVector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Model\abstractModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\cityModel\cityScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\cityModel\TriangleMesh\cannyImage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\cityModel\TriangleMesh\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\cityModel\TriangleMesh\IO_obj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_scsTree.cpp">
@@ -239,12 +218,6 @@
     <ClCompile Include="Computation\computeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\stringUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Material\scsMaterial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Material\materialManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -310,19 +283,7 @@
     <ClInclude Include="util\ArcBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\EField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="util\emxCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\emxRenderUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\emxUtilityInc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="util\HsvToRgb.h">
@@ -334,37 +295,10 @@
     <ClInclude Include="util\Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util\vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model\abstractModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Model\cityModel\cityModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\cityGround.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\cityGroundVector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\cityScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\TriangleMesh\meshStruct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\TriangleMesh\point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\TriangleMesh\cannyImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\TriangleMesh\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\cityModel\TriangleMesh\IO_obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Model\abstractModelFactory.h">
@@ -394,13 +328,10 @@
     <ClInclude Include="Computation\computeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util\stringUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Material\scsMaterial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Material\materialManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util\emxRenderUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

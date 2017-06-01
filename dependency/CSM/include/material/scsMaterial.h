@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
-#include "util/vector.h"
-#include "util/Color.h"
+#include "../util/vector.h"
+#include "../util/Color.h"
 #include <vector>
 #include <iostream>
 class scsMaterial

@@ -10,7 +10,7 @@
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 
-#include "Vector.h"
+#include <util/vector.h>
 #include <math.h>
 #include <assert.h>
 

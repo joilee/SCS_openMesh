@@ -24,14 +24,6 @@ struct  material
 	double Reflection_Loss; //材质反射损耗，单位dB
 };
 
-struct Vedge
-{
-	Vector3d start;  //起始点
-	Vector3d end;  //终止点
-	//夹棱边两面的法向量
-	Vector3d normal_front;   
-	Vector3d normal_back;
-	int materialId;  //棱边所在object的材料属性
-};
+
 
 #endif
