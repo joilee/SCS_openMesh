@@ -1,8 +1,8 @@
 #pragma once
 #include <QtGui> 
 #include <QTableWidget>
-#include "../observer/observer.h"
-class scsModelTable :public QTableWidget, public Observer
+#include "../observer/modelObserver.h"
+class scsModelTable :public QTableWidget, public modelObserver
 {
 	Q_OBJECT
 public:

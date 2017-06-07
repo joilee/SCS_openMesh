@@ -2,7 +2,7 @@
 #include <QHeaderView>
 #include <sstream>  
 
-scsModelTable::scsModelTable(QWidget* a ) :Observer("scsModelTable"), QTableWidget(a)
+scsModelTable::scsModelTable(QWidget* a ) :modelObserver("scsModelTable"), QTableWidget(a)
 {
 	//QWidget::showMaximized();
 //	this = new QTableWidget(this);

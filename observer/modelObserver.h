@@ -4,12 +4,15 @@
 #include "../visualData/visualModelItem.h"
 using namespace std;
 
+/*
+@brief 观察者模式——为了模型准备的观察者模式
+*/
 class Subject;
 //抽象观察者
-class Observer
+class modelObserver
 {
 public:
-	Observer(string name)
+	modelObserver(string name)
 	{
 		this->name = name;
 	}

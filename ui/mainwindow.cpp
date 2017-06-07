@@ -268,6 +268,7 @@ void MainWindow::openTransAntenna_ParamFile()
 	if (path.isEmpty())
 		return;
 	globalCtx->cptManager->openTransAntenna_ParamFile(path);
+
 }
 
 void MainWindow::openNo_SimplaneReceiverFile()

@@ -310,12 +310,6 @@
     <ClInclude Include="Model\modelManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="observer\observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="observer\subject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="visualData\visualModelItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -332,6 +326,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="util\emxRenderUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observer\modelObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

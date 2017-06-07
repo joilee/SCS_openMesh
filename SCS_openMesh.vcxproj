@@ -226,8 +226,7 @@
     <ClInclude Include="Model\cityModel\cityLocalModel.h" />
     <ClInclude Include="Model\cityModel\cityModel.h" />
     <ClInclude Include="Model\modelManager.h" />
-    <ClInclude Include="observer\observer.h" />
-    <ClInclude Include="observer\subject.h" />
+    <ClInclude Include="observer\modelObserver.h" />
     <ClInclude Include="para\computePara.h" />
     <ClInclude Include="para\modelPara.h" />
     <ClInclude Include="para\visualPara.h" />

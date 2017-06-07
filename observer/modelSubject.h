@@ -1,14 +1,17 @@
 #pragma once
-
-#include "subject.h"
 #include "../visualData/visualModelItem.h"
-class modelSubject:public Subject
+#include <string>
+#include <set>
+class modelObserver;
+
+class modelSubject
 {
 public:
 	explicit modelSubject();
 	~modelSubject();
-	void attach(Observer*);
-	void detach(Observer*);
+	set<modelObserver*> observers;
+	void attach(modelObserver*);
+	void detach(modelObserver*);
 	void notify();
 	//模型信息展示项
 	visualModelItem *visItem;

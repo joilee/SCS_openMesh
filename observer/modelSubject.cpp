@@ -1,14 +1,14 @@
 #include "modelSubject.h"
-#include "../observer/observer.h"
+#include "../observer/modelObserver.h"
 
-void modelSubject::attach(Observer*a)
+void modelSubject::attach(modelObserver*a)
 {
 	observers.insert(a);
 	cout << "添加观察者成功 "<<a->name << endl;
 }
-void modelSubject::detach(Observer*a)
+void modelSubject::detach(modelObserver*a)
 {
-	set<Observer*>::iterator it=observers.begin();
+	set<modelObserver*>::iterator it=observers.begin();
 	while (it!=observers.end())
 	{
 		if ((*it)==a)
@@ -23,7 +23,7 @@ void modelSubject::detach(Observer*a)
 void modelSubject::notify()
 {
 	cout << "subject开始发送消息" << endl;
-	set<Observer*>::iterator it = observers.begin();
+	set<modelObserver*>::iterator it = observers.begin();
 	while (it != observers.end())
 	{
 		(*it)->update(this->visItem);
@@ -38,4 +38,5 @@ modelSubject::modelSubject()
 
 modelSubject::~modelSubject()
 {
+
 }
