@@ -221,6 +221,12 @@
     <ClCompile Include="Material\materialManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="visualData\visualAntennaItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="observer\antennaSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Antenna\antenna.h">
@@ -329,6 +335,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="observer\modelObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="visualData\visualAntennaItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observer\antennaSubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="observer\antennaObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

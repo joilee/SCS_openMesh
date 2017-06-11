@@ -158,6 +158,7 @@
     <ClCompile Include="Model\cityModel\cityModelFactory.cpp" />
     <ClCompile Include="Model\cityModel\cityModel.cpp" />
     <ClCompile Include="Model\modelManager.cpp" />
+    <ClCompile Include="observer\antennaSubject.cpp" />
     <ClCompile Include="observer\modelSubject.cpp" />
     <ClCompile Include="para\computePara.cpp" />
     <ClCompile Include="para\modelPara.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="util\emxCamera.cpp" />
     <ClCompile Include="util\HsvToRgb.cpp" />
     <ClCompile Include="util\Quaternion.cpp" />
+    <ClCompile Include="visualData\visualAntennaItem.cpp" />
     <ClCompile Include="visualData\visualModelItem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +200,8 @@
     <ClInclude Include="Material\materialManager.h" />
     <ClInclude Include="Model\abstractModel.h" />
     <ClInclude Include="Model\abstractModelFactory.h" />
+    <ClInclude Include="observer\antennaObserver.h" />
+    <ClInclude Include="observer\antennaSubject.h" />
     <ClInclude Include="observer\modelSubject.h" />
     <CustomBuild Include="ui\scsModelTable.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -210,6 +214,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB  "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-ID:\project\SCS_openMesh\SCS_openMesh\dependency\CSM\include"</Command>
     </CustomBuild>
     <ClInclude Include="util\emxRenderUtility.h" />
+    <ClInclude Include="visualData\visualAntennaItem.h" />
     <ClInclude Include="visualData\visualModelItem.h" />
     <CustomBuild Include="glWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

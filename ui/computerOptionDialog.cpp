@@ -8,7 +8,7 @@
 
 computerOptionDialog::computerOptionDialog(QWidget *parent){
 
-	es=new emitSource;
+	es=new emitSource(parent);
 	fp=new fieldpoint;
 	sa=new simuArgument;
 	 QPushButton *closeButton = new QPushButton(tr("Close"));

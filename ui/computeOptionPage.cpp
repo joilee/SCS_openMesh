@@ -4,9 +4,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
+#include <QDebug>
 //构造函数
-emitSource::emitSource(QWidget* parent)
+emitSource::emitSource(QWidget* parent) :antennaObserver("emit Source")
 {
 	angleOfNorth=90;
 
@@ -60,6 +60,89 @@ emitSource::emitSource(QWidget* parent)
 double emitSource::getAngle()
 {
 	return angleOfNorth;
+}
+
+//寻找一个小区是否在treewidget
+bool  emitSource::findSite(QString a)
+{
+	QTreeWidgetItemIterator  it(sitesTreewidget);
+	bool res = false;
+	while (*it) { // text(0)是QTreeWidgetItem的函数，即第零列的文字
+		qDebug() <<"info:qtreeWidget Site"<< (*it)->text(0);
+		if ((*it)->text(0) == a)
+		{
+			res = true;
+			break;
+		}
+		++it;
+	}
+	return res;
+}
+
+QTreeWidgetItem * emitSource::getItem(QString a)
+{
+	QTreeWidgetItemIterator  it(sitesTreewidget);
+	while (*it) { // text(0)是QTreeWidgetItem的函数，即第零列的文字
+		if ((*it)->text(0) == a)
+		{
+			return *it;
+		}
+		++it;
+	}
+	return NULL;
+}
+
+bool emitSource::findAnte(string a)
+{
+	QTreeWidgetItemIterator  it(sitesTreewidget);
+	bool res = false;
+	while (*it) { // text(0)是QTreeWidgetItem的函数，即第零列的文字
+		qDebug() << "info: qtreeWidget antenna" << (*it)->text(0);
+		if ((*it)->text(0) == QString::fromStdString(a))
+		{
+			res = true;
+			break;
+		}
+		++it;
+	}
+	return res;
+}
+void emitSource::update(visualAntennaItem*a)
+{
+	//遍历a中所有的小区以及基站，看是否有对应的项目，如果没有则要插入
+
+	//step1 遍历小区，如果没有则要插入
+	set<int> site = a->getSites();
+	set<int>::iterator it = site.begin();
+	for (; it != site.end();it++)
+	{
+		QString aname = QString("Site") +QString::number (*it);
+		if (!findSite(aname))
+		{
+			QTreeWidgetItem* site_root = new QTreeWidgetItem(sitesTreewidget, QStringList(aname));
+			sitesTreewidget->addTopLevelItem(site_root);
+		}
+	}
+
+	//对每个基站进行遍历,如果没有找到，就找到它的父结点
+	map<int, SiteAntenna*> mp = a->getMap();
+	map<int, SiteAntenna*>::iterator mIt = mp.begin();
+	for (; mIt != mp.end();mIt++)
+	{
+		set<string>::iterator sIt = mIt->second->ante.begin();
+		QString anteName = QString("Site") + QString::number(mIt->second->id);
+		QTreeWidgetItem *parent = getItem(anteName);
+		for (; sIt != mIt->second->ante.end();sIt++)
+		{
+			string cellname = "Cell" + *(sIt);
+			if (!findAnte(cellname))
+			{
+				QTreeWidgetItem *leaf = new QTreeWidgetItem(parent, QStringList(QString::fromStdString(cellname)));
+				parent->addChild(leaf);
+			}
+		}
+	}
+
 }
 
 void fieldpoint::getFieldPoint(double &lx,double &ly,double &rx,double &ry,double &pre,double &alti)

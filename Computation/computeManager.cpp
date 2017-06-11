@@ -6,11 +6,13 @@
 computeManager::computeManager()
 {
 	cptPara = new ComputePara;
+	subject = new antennaSubject;
 }
 
 computeManager::~computeManager()
 {
 	delete cptPara;
+	delete subject;
 }
 
 void computeManager:: openTransAntenna_ParamFile(QString path)
@@ -86,8 +88,10 @@ void computeManager:: openTransAntenna_ParamFile(QString path)
 			new_site.Site_Antennas.push_back(new_antenna);
 			cptPara->Sites.push_back(new_site);
 		}
+		subject->AntennaItem->addSite(current_sitename, CellName);
 	}
 	infile.close();
+	subject->notify();
 	cout << "info:读取天线文件成功" << endl;
 }
 

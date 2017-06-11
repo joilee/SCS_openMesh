@@ -1,5 +1,6 @@
 #pragma  once
 #include "../para/computePara.h"
+#include "../observer/antennaSubject.h"
 #include <QString>
 
 /*
@@ -29,8 +30,10 @@ public:
 	@brief
 	*/
 	vector<Site> &getSite();
-
+	
+	antennaSubject * getSubject(){ return subject; }
 private:
 	ComputePara* cptPara;
+	antennaSubject *subject;
 };
 

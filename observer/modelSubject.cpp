@@ -4,7 +4,7 @@
 void modelSubject::attach(modelObserver*a)
 {
 	observers.insert(a);
-	cout << "添加观察者成功 "<<a->name << endl;
+	cout << "info: 添加模型观察者成功 "<<a->name << endl;
 }
 void modelSubject::detach(modelObserver*a)
 {
@@ -22,7 +22,7 @@ void modelSubject::detach(modelObserver*a)
 
 void modelSubject::notify()
 {
-	cout << "subject开始发送消息" << endl;
+	cout << "info: modelSubject开始发送消息" << endl;
 	set<modelObserver*>::iterator it = observers.begin();
 	while (it != observers.end())
 	{

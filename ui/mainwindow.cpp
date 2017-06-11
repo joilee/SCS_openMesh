@@ -36,6 +36,7 @@ void MainWindow::init()
 
 	globalContext *gctx = globalContext::GetInstance();
 	gctx->modelManager->getModelSubject()->attach(modelTable);
+	gctx->cptManager->getSubject()->attach(M_computeroptionDialog->es);
 	//场景数据初始化
 
 
@@ -381,6 +382,10 @@ void MainWindow::quickLoadJson()
 {
 
 	QString path = QFileDialog::getOpenFileName(this,QStringLiteral("快速导入场景"),"./",QStringLiteral("场景文件 (*.json)"));
+	if (path.isNull())
+	{
+		return;
+	}
 	globalContext *gctx = globalContext::GetInstance();
 	gctx->modelManager->loadCityModel(path.toStdString());
 

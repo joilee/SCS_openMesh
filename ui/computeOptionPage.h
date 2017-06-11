@@ -9,6 +9,7 @@
 #include <QListWidget>
 #include <string>
 #include <QComboBox>
+#include "../../observer/antennaObserver.h"
 using namespace std;
 /************************************************************************/
 /* 
@@ -18,11 +19,13 @@ using namespace std;
 	参数列表支持动态添加和删除，每个参数列表支持编辑。
 */
 /************************************************************************/
-class emitSource:public QWidget
+class emitSource:public QWidget,public antennaObserver
 {
 	Q_OBJECT
 	public:
-		emitSource(QWidget* parent =0);		
+		emitSource(QWidget* parent );		
+		void update(visualAntennaItem*a);
+
 		double getAngle();
 		QPushButton *loadSitesButton;
 		QPushButton *loadTransAntennaButton;
@@ -34,8 +37,9 @@ class emitSource:public QWidget
 		double angleOfNorth;//正北方向在场景坐标系中的phi角度
 		QGroupBox *firstGroup;
 		QLineEdit * angleEdit;
-	
-
+		bool findSite(QString a);
+		bool findAnte(string a);
+		QTreeWidgetItem * getItem(QString a);
 };
 
 class fieldpoint:public QWidget
