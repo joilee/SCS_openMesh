@@ -23,6 +23,10 @@
 #include <cfloat>
 #include <malloc.h>
 #include<cassert>
+#ifdef _MATH_DEFINES_DEFINED
+#undef  _MATH_DEFINES_DEFINED
+#endif // !_MATH_DEFINES_DEFINED
+
 #include <math.h>
 #include "vector.h"
 using namespace std;

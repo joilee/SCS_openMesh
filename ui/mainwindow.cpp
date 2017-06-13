@@ -103,8 +103,6 @@ void MainWindow::createActions()
 	connect(ui.action_6, SIGNAL(triggered()), this, SLOT(setMeshOption()));
 	connect(ui.action_startMesh, SIGNAL(triggered()), this, SLOT(meshAll()));
 	connect(ui.action_saveLocal, SIGNAL(triggered()), this, SLOT(saveLocalScene()));
-	connect(M_computeroptionDialog->es->loadSitesButton, SIGNAL(clicked()), this, SLOT(openTransAntenna_ParamFile()));
-	connect(M_computeroptionDialog->es->loadTransAntennaButton, SIGNAL(clicked()), this, SLOT(openTransAntennas_DirGain()));
 	connect(M_computeroptionDialog->fp->loadReceieverPointFile, SIGNAL(clicked()), this, SLOT(openNo_SimplaneReceiverFile()));
 	connect(ui.action_loadPlugin, SIGNAL(triggered()), this, SLOT(loadPlugin()));
 	connect(ui.action_run, SIGNAL(triggered()), this, SLOT(run()));
@@ -125,6 +123,12 @@ void MainWindow::generateModelPara()
 	}
 	globalCtx->modelManager->setModelPara();
 	outputLog(QStringLiteral("success: 生成模型参数成功！"));
+}
+
+void MainWindow::generateCptpara()
+{
+	globalContext *globalCtx = globalContext::GetInstance();
+
 }
 
 void MainWindow::setDrawPointMode(bool flag)
@@ -248,33 +252,23 @@ void MainWindow::setModelName(int index,QString name)
 
 
 
-void MainWindow::openTransAntennas_DirGain()
-{
 
-}
 
-void MainWindow::openTransAntenna_ParamFile()
+
+
+void MainWindow::openNo_SimplaneReceiverFile()
 {
-	site_roots1.clear();
-	site_roots2.clear();
-	M_computeroptionDialog->es->sitesTreewidget->clear();
-	//检测是否导入场景
+	QString path = QFileDialog::getOpenFileName(this, QStringLiteral("打开非仿真面设置的接收点文件"), "./", QStringLiteral("csv 非仿真面接收点文件 (*.csv)"));
+	if (path.isEmpty())
+		return;
 	globalContext *globalCtx = globalContext::GetInstance();
 	if (!globalCtx->modelManager->checkCityExist())
 	{
 		QMessageBox::warning(this, QStringLiteral("发射天线设置"), QStringLiteral("请先加载场景"));
 		return;
 	}
-	QString path = QFileDialog::getOpenFileName(this, QStringLiteral("导入发射天线（站点）参数信息文件"), "./", QStringLiteral("csv 发射天线（站点）参数信息文件 (*.csv)"));
-	if (path.isEmpty())
-		return;
-	globalCtx->cptManager->openTransAntenna_ParamFile(path);
-
-}
-
-void MainWindow::openNo_SimplaneReceiverFile()
-{
-
+	globalCtx->cptManager->openNo_simplaneReceiver(path.toStdString());
+	return;
 }
 
 

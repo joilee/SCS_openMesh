@@ -68,7 +68,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Antenna\antenna.cpp" />
     <ClCompile Include="Computation\computeManager.cpp" />
     <ClCompile Include="Context\context.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_computeOptionPage.cpp">
@@ -182,8 +181,6 @@
     <ClCompile Include="visualData\visualModelItem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Antenna\antenna.h" />
-    <ClInclude Include="Antenna\receiver.h" />
     <ClInclude Include="Computation\computeManager.h" />
     <ClInclude Include="Context\context.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />

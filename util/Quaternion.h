@@ -11,7 +11,7 @@
 #define __QUATERNION_H__
 
 #include <util/vector.h>
-#include <math.h>
+#include <cmath>
 #include <assert.h>
 
 //namespace emxUtility {

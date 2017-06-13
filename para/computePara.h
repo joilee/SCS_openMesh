@@ -1,13 +1,12 @@
 ﻿#ifndef COMPUTE_PARA
 #define COMPUTE_PARA
-#include "Antenna/antenna.h"
-#include "Antenna/receiver.h"
+#include <Antenna/antenna.h>
+#include <Antenna/receiver.h>
 class ComputePara
 {
 public:
 	ComputePara();
 	~ComputePara();
-
 
 	double phi;//正北方向在场景坐标系中的phi角度
 	double leftUpX,leftUpY;

@@ -20,13 +20,16 @@ public:
 	emitSource* es;
 	fieldpoint *fp;
 	simuArgument *sa;
+	
 	public slots:
 			void changePage(QListWidgetItem *current, QListWidgetItem *previous);
 			void getPara();
+			bool checkSiteAndAnte();
 private:
 	QListWidget *contentsWidget;
 	QStackedWidget *pagesWidget;
 	QPushButton *okButton;
+	QPushButton *check;
 };
 
 #endif

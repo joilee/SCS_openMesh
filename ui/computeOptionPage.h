@@ -25,12 +25,12 @@ class emitSource:public QWidget,public antennaObserver
 	public:
 		emitSource(QWidget* parent );		
 		void update(visualAntennaItem*a);
-
 		double getAngle();
 		QPushButton *loadSitesButton;
 		QPushButton *loadTransAntennaButton;
 		QTreeWidget *sitesTreewidget;
 		QListWidget * AntennaList;
+
 	protected:
 
 	private:
@@ -40,6 +40,11 @@ class emitSource:public QWidget,public antennaObserver
 		bool findSite(QString a);
 		bool findAnte(string a);
 		QTreeWidgetItem * getItem(QString a);
+public:
+		bool siteflag, gainFlag;
+	private slots:
+		void openTransAntennas_DirGain();
+		void openTransAntenna_ParamFile();
 };
 
 class fieldpoint:public QWidget

@@ -7,12 +7,131 @@ computeManager::computeManager()
 {
 	cptPara = new ComputePara;
 	subject = new antennaSubject;
+	siteFlag = false;
+	antennaFlag = false;
+	noSimFlag = false;
 }
 
 computeManager::~computeManager()
 {
 	delete cptPara;
 	delete subject;
+}
+
+bool computeManager::checkPara()
+{
+	if (antennaFlag==false)
+	{
+		cout << "error: 没有天线增益文件" << endl;
+		return false;
+	}
+	if (siteFlag==false)
+	{
+		cout << "error:没有小区文件" << endl;
+		return false;
+	}
+	return true;
+}
+
+void computeManager::openTransAntennas_DirGain(QStringList paths)
+{
+	for (int i = 0; i < cptPara->Sites.size(); i++)
+	{
+		for (int j = 0; j < cptPara->Sites[i].Site_Antennas.size(); j++)
+		{
+			//对每个site中每个cell从批量导入的方向增益文件中找到匹配的增益文件
+			string cell_name = cptPara->Sites[i].Site_Antennas[j].Cell_Name + ".txt";
+			for (int path_id = 0; path_id < paths.size(); path_id++)
+			{
+				string path = paths[path_id].toStdString();
+				if (path.find(cell_name) != std::string::npos)
+				{
+					//打开发射天线方向增益文件，读取各方向增益
+					ifstream infile(path.c_str(), ios::in | ios::_Nocreate);
+					if (!infile)
+					{
+						cout << "can not open file!" << endl;
+						return;
+					}
+
+					string str, str_flag;
+					getline(infile, str);
+					istringstream linestream(str);
+					linestream >> str_flag;
+					if (str_flag == "NAME")
+					{
+						getline(infile, str);
+						getline(infile, str);
+					}
+					getline(infile, str);
+					istringstream linestream1(str);
+					linestream1 >> str_flag;
+					if (str_flag == "Gain")
+					{
+						getline(infile, str);
+						istringstream linestream2(str);
+						linestream2 >> str_flag;
+						cptPara->Sites[i].Site_Antennas[j].initial_Gain = atof(str_flag.c_str());
+						getline(infile, str);
+						getline(infile, str);
+						getline(infile, str);
+					}
+					while (getline(infile, str))
+					{
+						istringstream linestream3(str);
+						linestream3 >> str_flag;
+						vector<double> antenna_property(3); // V_angle  H_angle  attenuation
+						antenna_property[0] = atof(str_flag.c_str());
+						linestream3 >> antenna_property[1] >> antenna_property[2];
+						cptPara->Sites[i].Site_Antennas[j].direction_Gain.push_back(antenna_property);
+						linestream3.str("");
+					}
+					infile.close();
+					break;
+				}
+			}
+		}
+	}
+	QMessageBox::warning(NULL, QStringLiteral("多个站点方向增益文件"), QStringLiteral("加载成功"));
+	antennaFlag = true;
+}
+
+void computeManager::openNo_simplaneReceiver(string path)
+{
+	cptPara->No_SimPlanePoint.clear();
+	fstream infile(path.c_str(), ios::in | ios::_Nocreate);
+	if (!infile)
+	{
+		cout << "error: can not open file!" << endl;
+		return;
+	}
+	string str;
+	getline(infile, str);
+	globalContext *glbctx = globalContext::GetInstance();
+	while (getline(infile, str))
+	{
+		istringstream linestream(str);
+		vector<string>parameters;
+		string parameter;
+		while (getline(linestream, parameter, ','))
+		{
+			parameters.push_back(parameter);
+		}
+		string str_x = Trim(parameters[0]);
+		string str_y = Trim(parameters[1]);
+		string str_z = Trim(parameters[2]);
+		string PCI = Trim(parameters[3]);
+		double x = atof(str_x.c_str());
+		double y = atof(str_y.c_str());
+		double z = atof(str_z.c_str()) + glbctx->modelManager->getFirstLocal()->getAltitude(x, y);
+		no_simplaneReceiver receiver;
+		receiver.position = Vector3d(x, y, z);
+		receiver.PCI = atoi(PCI.c_str());
+		cptPara->No_SimPlanePoint.push_back(receiver);
+	}
+	infile.close();
+	cptPara->no_simplane = true;
+	noSimFlag = true;
 }
 
 void computeManager:: openTransAntenna_ParamFile(QString path)
@@ -93,6 +212,7 @@ void computeManager:: openTransAntenna_ParamFile(QString path)
 	infile.close();
 	subject->notify();
 	cout << "info:读取天线文件成功" << endl;
+	siteFlag = true;
 }
 
 vector<Site> & computeManager::getSite()

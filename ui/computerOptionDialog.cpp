@@ -12,10 +12,13 @@ computerOptionDialog::computerOptionDialog(QWidget *parent){
 	fp=new fieldpoint;
 	sa=new simuArgument;
 	 QPushButton *closeButton = new QPushButton(tr("Close"));
-	 okButton=new QPushButton(tr("OK"));
+	 okButton=new QPushButton(tr("Update"));
+	 okButton->setToolTip(QStringLiteral("更新参数"));
+	 check = new QPushButton(tr("Check"));
+	 check->setToolTip(QStringLiteral("检查参数是否完整"));
 	 connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 	 connect(okButton,SIGNAL(clicked()),this,SLOT(getPara()));
-
+	 connect(check, SIGNAL(clicked()), this, SLOT(checkSiteAndAnte()));
 	contentsWidget = new QListWidget;
 	//layout
 	contentsWidget->setMovement(QListView::Static);
@@ -56,6 +59,7 @@ computerOptionDialog::computerOptionDialog(QWidget *parent){
 
 	  QHBoxLayout *buttonsLayout = new QHBoxLayout;
 	  buttonsLayout->addStretch(1);
+	  buttonsLayout->addWidget(check);
 	   buttonsLayout->addWidget(okButton);
 	  buttonsLayout->addWidget(closeButton);
 
@@ -64,6 +68,16 @@ computerOptionDialog::computerOptionDialog(QWidget *parent){
 	   mainLayout->addLayout(buttonsLayout);
 	    setLayout(mainLayout);
 		setWindowTitle(tr("Option"));
+}
+
+bool computerOptionDialog::checkSiteAndAnte()
+{
+	if (es->siteflag==false||es->gainFlag==false)
+	{
+		QMessageBox::warning(this, QStringLiteral("天线参数"), QStringLiteral("缺少天线或者小区数据，请导入"));
+		return false;
+	}
+	return true;
 }
 
 void computerOptionDialog::changePage(QListWidgetItem *current, QListWidgetItem *previous)
@@ -80,6 +94,11 @@ void computerOptionDialog::changePage(QListWidgetItem *current, QListWidgetItem 
 
 void computerOptionDialog::getPara()
 {
+	if (!checkSiteAndAnte())
+	{
+		return;
+	}
+	
 	globalContext *gctx=globalContext::GetInstance();
 	ComputePara *tmp = gctx->cptManager->getComputationPara();
 	tmp->phi=es->getAngle();

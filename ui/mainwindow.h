@@ -19,6 +19,7 @@
 #include "scsModelTable.h"
 
 
+
 class QAction; 
 struct building;
 
@@ -45,8 +46,6 @@ private slots:
 	void loadAllFile(QString _name,QStringList _v,QStringList _h,QString _p);
 	void showAll();  
 	void showLocal();
-	void openTransAntenna_ParamFile();
-	void openTransAntennas_DirGain();
 	void openNo_SimplaneReceiverFile();
 	void loadObj();
 	void setMaterial();
@@ -64,6 +63,7 @@ private slots:
 	void setDrawLineMode(bool);
 	void setDrawFaceMode(bool);
 	void generateModelPara();
+	void generateCptpara();
 
 private:
 	void load_Material(string path);
@@ -75,8 +75,6 @@ private:
 	QTreeWidgetItem* computeTW;
 	QTreeWidgetItem* visualTW;
 
-	vector <QTreeWidgetItem*> site_roots1;
-	vector <QTreeWidgetItem*> site_roots2;
 
 	outdoorFileDialog*  M_outdoorFileDialog;
 	computerOptionDialog* M_computeroptionDialog;

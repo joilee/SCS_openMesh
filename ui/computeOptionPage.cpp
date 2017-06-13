@@ -1,10 +1,13 @@
-﻿
-#include "computeOptionPage.h"
+﻿#include "computeOptionPage.h"
 #include <qwidget.h>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QMessageBox>
 #include <QDebug>
+#include <QFileDialog>
+#include "../../Context/context.h"
+
 //构造函数
 emitSource::emitSource(QWidget* parent) :antennaObserver("emit Source")
 {
@@ -53,10 +56,42 @@ emitSource::emitSource(QWidget* parent) :antennaObserver("emit Source")
 	mainLayout->addWidget(firstGroup);
 	mainLayout->addStretch(1);
 	setLayout(mainLayout);
+
+	connect(loadTransAntennaButton, SIGNAL(clicked()), this, SLOT(openTransAntennas_DirGain()));
+	connect(loadSitesButton, SIGNAL(clicked()), this, SLOT(openTransAntenna_ParamFile()));
+
+	siteflag = false;
+	gainFlag = false;
 }
 
+void emitSource::openTransAntennas_DirGain()
+{
+	QStringList paths = QFileDialog::getOpenFileNames(this, QStringLiteral("批量导入天线方向增益文件"), "./", QStringLiteral("txt  天线方向增益文件 (*.txt)"));
+	if (paths.isEmpty())
+		return;
+	globalContext *glbctx = globalContext::GetInstance();
+	glbctx->cptManager->openTransAntennas_DirGain(paths);
+	gainFlag = true;
+	return;
+}
 
-
+void emitSource::openTransAntenna_ParamFile()
+{
+	sitesTreewidget->clear();
+	//检测是否导入场景
+	globalContext *globalCtx = globalContext::GetInstance();
+	if (!globalCtx->modelManager->checkCityExist())
+	{
+		QMessageBox::warning(this, QStringLiteral("发射天线设置"), QStringLiteral("请先加载场景"));
+		return;
+	}
+	QString path = QFileDialog::getOpenFileName(this, QStringLiteral("导入发射天线（站点）参数信息文件"), "./", QStringLiteral("csv 发射天线（站点）参数信息文件 (*.csv)"));
+	if (path.isEmpty())
+		return;
+	globalCtx->cptManager->openTransAntenna_ParamFile(path);
+	siteflag = true;
+	return;
+}
 double emitSource::getAngle()
 {
 	return angleOfNorth;
@@ -162,7 +197,7 @@ fieldpoint::fieldpoint(QWidget* parent)
 	leftupY=0;
 	rightbottomX=0;
 	rightbottomY=0;
-	predictPrecision=0;
+	predictPrecision=5;
 	predictAltitude=0;
 
 	//布局
@@ -255,7 +290,7 @@ fieldpoint::fieldpoint(QWidget* parent)
 	leftupYinput->setText("0");
 	rightbottomXinput->setText("0");
 	rightbottomYinput->setText("0");
-	Precisioninput->setText("0");
+	Precisioninput->setText("5");
 	Altitudeinput->setText("0");
 }
 

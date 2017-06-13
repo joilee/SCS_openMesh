@@ -38,9 +38,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Antenna\antenna.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Context\context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -229,12 +226,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Antenna\antenna.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Antenna\receiver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Context\context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
