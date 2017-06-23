@@ -1,5 +1,5 @@
 #pragma  once
-#include "../para/computePara.h"
+#include <para/computePara.h>
 #include "../observer/antennaSubject.h"
 #include <QString>
 

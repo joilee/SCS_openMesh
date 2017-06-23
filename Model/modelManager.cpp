@@ -5,6 +5,7 @@
 ModelManager::ModelManager()
 {
 	matManager = new scsMaterialManager;
+	modelPara = new ModelPara;
 	cityFac = new cityModelFactory;
 	m_subject = new modelSubject;
 	transparency = 1;

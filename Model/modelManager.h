@@ -4,7 +4,7 @@
 #include "abstractModelFactory.h"
 #include  "cityModel/cityModelFactory.h"
 #include  "../observer/modelSubject.h"
-#include "../para/modelPara.h"
+#include <para/modelPara.h>
 #include "../Material/materialManager.h"
 #include <map>
 class ModelManager
