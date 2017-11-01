@@ -487,12 +487,12 @@ void GLWidget::drawPlane()
 				for(int j = 0; j < horizonNum[id]-1; j++)
 				{
 					Vector3d v1 = EPoint[j*veticalNum[id] + i].Position;
-					Vector3d v2 = EPoint[j*veticalNum[id] + i + 1].Position;
-					Vector3d v4 = EPoint[(j+1)*veticalNum[id] + i].Position;
+					Vector3d v4 = EPoint[j*veticalNum[id] + i + 1].Position;
+					Vector3d v2 = EPoint[(j+1)*veticalNum[id] + i].Position;
 					Vector3d v3 = EPoint[(j+1)*veticalNum[id] + i + 1].Position;
 					double c1 = (EPoint[j*veticalNum[id] + i].MolStrength - emin)/length;
-					double c2 = (EPoint[j*veticalNum[id] + i +1].MolStrength - emin)/length;
-					double c4 = (EPoint[(j+1)*veticalNum[id] + i].MolStrength - emin)/length;
+					double c4 = (EPoint[j*veticalNum[id] + i +1].MolStrength - emin)/length;
+					double c2 = (EPoint[(j+1)*veticalNum[id] + i].MolStrength - emin)/length;
 					double c3 = (EPoint[(j+1)*veticalNum[id] + i + 1].MolStrength - emin)/length;
 
 					Color result(0.5, 0.0, 0.0); 
@@ -617,28 +617,28 @@ void GLWidget::drawColorbar()
 	glBegin (GL_QUAD_STRIP);      //
 
 	glColor3f( 1.0 ,0.0 ,0.0 ) ;	   //红 
-	glVertex2i(cx,cy);
 	glVertex2i(cx+cw,cy);
+	glVertex2i(cx,cy);
 
 	glColor3f(  1.0 ,0.5 ,0.0 );	   //桔黄
-	glVertex2i(cx,cy+ch/5);
 	glVertex2i(cx+cw,cy+ch/5);
+	glVertex2i(cx,cy+ch/5);
 
 	glColor3f( 1.0 ,1.0 ,0.0);	   //黄
-	glVertex2i(cx,cy+2*ch/5);
 	glVertex2i(cx+cw,cy+2*ch/5);
+	glVertex2i(cx,cy+2*ch/5);
 
 	glColor3f( 0.0 ,1.0 ,0.0);	   //绿
-	glVertex2i(cx,cy+3*ch/5);
 	glVertex2i(cx+cw,cy+3*ch/5);
+	glVertex2i(cx,cy+3*ch/5);
 
 	glColor3f( 0.0 ,1.0 ,1.0);	   //青 
-	glVertex2i(cx,cy+4*ch/5);
 	glVertex2i(cx+cw,cy+4*ch/5);
+	glVertex2i(cx,cy+4*ch/5);
 
 	glColor3f( 0.0 ,0.0 ,1.0);	   //蓝
-	glVertex2i(cx,cy+5*ch/5);
 	glVertex2i(cx+cw,cy+5*ch/5);
+	glVertex2i(cx,cy+5*ch/5);
 
 	glEnd(); 
 

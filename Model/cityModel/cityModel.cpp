@@ -1,6 +1,7 @@
 #include "cityModel.h"
 #include <QString>
 #include <QFileDialog>
+#include <QJsonValue>
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>

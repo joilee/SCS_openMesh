@@ -13,45 +13,40 @@
 /************************************************************************/
 /* 单例模式                                                                     */
 /************************************************************************/
-class globalContext
-{
-public:	
+class globalContext {
+public:
 
-	//
-	
-	//ComputePara* cptPara;
-	visPara *visualPara;
-	
-	ModelManager * modelManager;
-	computeManager * cptManager;
-	
-	~globalContext();
-	static globalContext*GetInstance()
-	{
-		if (ctx==NULL)
-		{
-			ctx=new globalContext();
-		}
-		return ctx;
-	}
+    //
+
+    //ComputePara* cptPara;
+    visPara *visualPara;
+
+    ModelManager * modelManager;
+    computeManager * cptManager;
+
+    ~globalContext();
+    static globalContext*GetInstance() {
+        if (ctx==NULL) {
+            ctx=new globalContext();
+        }
+        return ctx;
+    }
 
 
 
 private:
-	//嵌套类,目的是回收
-	class CGarbo     
-	{    
-	public:    
-		~CGarbo()    
-		{    
-			if(globalContext::ctx)    
-				delete globalContext::ctx;   
-		}    
-	};    
-	static CGarbo Garbo;     
+    //嵌套类,目的是回收
+    class CGarbo {
+    public:
+        ~CGarbo() {
+            if(globalContext::ctx)
+                delete globalContext::ctx;
+        }
+    };
+    static CGarbo Garbo;
 
-	globalContext();
-	static globalContext* ctx;
+    globalContext();
+    static globalContext* ctx;
 };
 
 

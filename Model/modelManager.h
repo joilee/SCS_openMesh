@@ -94,9 +94,15 @@ public:
 	*/
 	ModelPara* getModelPara(){ return modelPara; }
 
-	/*
-	@brief 设置计算参数
-	*/
+
+	//************************************
+	// Method:    setModelPara
+	// Note: 设置计算参数
+	// FullName:  ModelManager::setModelPara
+	// Access:    public 
+	// Returns:   void
+	// Qualifier:
+	//************************************
 	void setModelPara();
 private:
 

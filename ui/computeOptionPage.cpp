@@ -198,7 +198,7 @@ fieldpoint::fieldpoint(QWidget* parent)
 	rightbottomX=0;
 	rightbottomY=0;
 	predictPrecision=5;
-	predictAltitude=0;
+	predictAltitude=5;
 
 	//布局
 	QGroupBox *firstgroupbox=new QGroupBox(QStringLiteral("仿真区域（单位：m）"));
@@ -291,7 +291,7 @@ fieldpoint::fieldpoint(QWidget* parent)
 	rightbottomXinput->setText("0");
 	rightbottomYinput->setText("0");
 	Precisioninput->setText("5");
-	Altitudeinput->setText("0");
+	Altitudeinput->setText("5");
 }
 
 simuArgument::simuArgument(QWidget* parent)

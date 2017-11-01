@@ -104,15 +104,6 @@
     <ClCompile Include="io\io_simuPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="para\computePara.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="para\modelPara.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="para\visualPara.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\computeOptionPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -224,6 +215,12 @@
     <ClCompile Include="observer\antennaSubject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui\scsGLWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\scsSimuPlaneGLWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Context\context.h">
@@ -263,15 +260,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="io\io_simuPlane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="para\computePara.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="para\modelPara.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="para\visualPara.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="plugin\PluginInterface.h">
@@ -335,6 +323,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="observer\antennaObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\scsGLWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\scsSimuPlaneGLWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

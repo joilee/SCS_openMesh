@@ -212,6 +212,7 @@ void ModelManager:: setModelPara()
 {
 	cityLocalModel *tmp = getFirstLocal();
 	modelPara->setCityScene(tmp->getScene());
+	modelPara->setSceneRange(tmp->getRange());
 	modelPara->setMaterialVector(matManager->getMaterialVector());
 	modelPara->setGround_Mesh(tmp->getMesh());
 	modelPara->setVertices(tmp->getVertices());
